@@ -514,6 +514,136 @@ public class InvoiceController {
         }
     }
 
+    @GetMapping("/revenue-by-date")
+    public ResponseEntity<?> getRevenueByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            Authentication authentication) {
+        try {
+            User currentUser = (User) authentication.getPrincipal();
+            
+            // Convert LocalDate to LocalDateTime for database query
+            LocalDateTime startDateTime = startDate.atStartOfDay();
+            LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+            
+            // Get all invoices in the date range for current user
+            List<Invoice> invoices = invoiceRepository.findByUserAndCreatedAtBetweenOrderByCreatedAtAsc(
+                currentUser, startDateTime, endDateTime);
+            
+            // Group invoices by date and calculate daily revenue
+            Map<LocalDate, BigDecimal> dailyRevenue = new HashMap<>();
+            
+            for (Invoice invoice : invoices) {
+                LocalDate invoiceDate = invoice.getCreatedAt().toLocalDate();
+                BigDecimal currentRevenue = dailyRevenue.getOrDefault(invoiceDate, BigDecimal.ZERO);
+                dailyRevenue.put(invoiceDate, currentRevenue.add(invoice.getTotalAmount()));
+            }
+            
+            // Convert to list of DTOs
+            List<Map<String, Object>> revenueData = dailyRevenue.entrySet().stream()
+                .map(entry -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("date", entry.getKey().toString());
+                    dto.put("revenue", entry.getValue());
+                    return dto;
+                })
+                .sorted((a, b) -> ((String) a.get("date")).compareTo((String) b.get("date")))
+                .toList();
+            
+            return ResponseEntity.ok(revenueData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error loading revenue data: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/revenue-summary")
+    public ResponseEntity<?> getRevenueSummary(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            Authentication authentication) {
+        try {
+            User currentUser = (User) authentication.getPrincipal();
+            LocalDate targetDate = date != null ? date : LocalDate.now();
+            
+            // Today's revenue
+            LocalDateTime startOfDay = targetDate.atStartOfDay();
+            LocalDateTime endOfDay = targetDate.atTime(LocalTime.MAX);
+            
+            List<Invoice> todayInvoices = invoiceRepository.findByUserAndCreatedAtBetween(
+                currentUser, startOfDay, endOfDay);
+            BigDecimal todayRevenue = todayInvoices.stream()
+                .map(Invoice::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+            // Yesterday's revenue
+            LocalDate yesterday = targetDate.minusDays(1);
+            LocalDateTime startOfYesterday = yesterday.atStartOfDay();
+            LocalDateTime endOfYesterday = yesterday.atTime(LocalTime.MAX);
+            
+            List<Invoice> yesterdayInvoices = invoiceRepository.findByUserAndCreatedAtBetween(
+                currentUser, startOfYesterday, endOfYesterday);
+            BigDecimal yesterdayRevenue = yesterdayInvoices.stream()
+                .map(Invoice::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+            // This month's revenue
+            LocalDate startOfMonth = targetDate.withDayOfMonth(1);
+            LocalDate endOfMonth = targetDate.withDayOfMonth(targetDate.lengthOfMonth());
+            LocalDateTime startOfMonthDateTime = startOfMonth.atStartOfDay();
+            LocalDateTime endOfMonthDateTime = endOfMonth.atTime(LocalTime.MAX);
+            
+            List<Invoice> thisMonthInvoices = invoiceRepository.findByUserAndCreatedAtBetween(
+                currentUser, startOfMonthDateTime, endOfMonthDateTime);
+            BigDecimal thisMonthRevenue = thisMonthInvoices.stream()
+                .map(Invoice::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+            // Last month's revenue
+            LocalDate lastMonth = targetDate.minusMonths(1);
+            LocalDate startOfLastMonth = lastMonth.withDayOfMonth(1);
+            LocalDate endOfLastMonth = lastMonth.withDayOfMonth(lastMonth.lengthOfMonth());
+            LocalDateTime startOfLastMonthDateTime = startOfLastMonth.atStartOfDay();
+            LocalDateTime endOfLastMonthDateTime = endOfLastMonth.atTime(LocalTime.MAX);
+            
+            List<Invoice> lastMonthInvoices = invoiceRepository.findByUserAndCreatedAtBetween(
+                currentUser, startOfLastMonthDateTime, endOfLastMonthDateTime);
+            BigDecimal lastMonthRevenue = lastMonthInvoices.stream()
+                .map(Invoice::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+            // Calculate percentages
+            double dailyChangePercentage = 0.0;
+            if (yesterdayRevenue.compareTo(BigDecimal.ZERO) > 0) {
+                dailyChangePercentage = todayRevenue.subtract(yesterdayRevenue)
+                    .divide(yesterdayRevenue, 4, BigDecimal.ROUND_HALF_UP)
+                    .multiply(BigDecimal.valueOf(100))
+                    .doubleValue();
+            }
+            
+            double monthlyChangePercentage = 0.0;
+            if (lastMonthRevenue.compareTo(BigDecimal.ZERO) > 0) {
+                monthlyChangePercentage = thisMonthRevenue.subtract(lastMonthRevenue)
+                    .divide(lastMonthRevenue, 4, BigDecimal.ROUND_HALF_UP)
+                    .multiply(BigDecimal.valueOf(100))
+                    .doubleValue();
+            }
+            
+            Map<String, Object> summary = new HashMap<>();
+            summary.put("todayRevenue", todayRevenue);
+            summary.put("yesterdayRevenue", yesterdayRevenue);
+            summary.put("thisMonthRevenue", thisMonthRevenue);
+            summary.put("lastMonthRevenue", lastMonthRevenue);
+            summary.put("dailyChangePercentage", dailyChangePercentage);
+            summary.put("monthlyChangePercentage", monthlyChangePercentage);
+            summary.put("date", targetDate.toString());
+            
+            return ResponseEntity.ok(summary);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error loading revenue summary: " + e.getMessage());
+        }
+    }
+
     private String generateInvoiceNumber() {
         String prefix = "INV";
         String timestamp = String.valueOf(System.currentTimeMillis());

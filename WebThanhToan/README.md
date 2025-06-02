@@ -1,271 +1,219 @@
-# WebThanhToan - Hệ thống quản lý thanh toán
+# WebThanhToan - Hệ thống POS (Point of Sale)
 
-Hệ thống quản lý thanh toán và kho hàng được xây dựng với React + Vite (Frontend) và Spring Boot + SQL Server (Backend).
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![React](https://img.shields.io/badge/React-19.0-blue.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-green.svg)
 
-## 🚀 Tính năng chính
+## 🚀 Tổng quan
 
-### Frontend (React + Vite)
-- **Dashboard**: Thống kê doanh thu, giao dịch gần đây, cảnh báo hàng tồn kho
-- **Quản lý hóa đơn**: Tạo hóa đơn đa tab, tìm kiếm sản phẩm, quản lý khách hàng, áp dụng giảm giá
-- **Quản lý sản phẩm**: CRUD sản phẩm với mô tả chi tiết, theo dõi tồn kho
-- **Báo cáo**: Lọc theo ngày, xuất báo cáo, thống kê bán hàng, in hóa đơn
-- **Xác thực**: Đăng nhập JWT, bảo vệ route
+**WebThanhToan** là hệ thống quản lý bán hàng (POS) hiện đại, được xây dựng với công nghệ mới nhất để phục vụ các cửa hàng bán lẻ, nhà hàng, và doanh nghiệp vừa và nhỏ.
 
-### Backend (Spring Boot + Java 21)
-- **API RESTful**: Quản lý sản phẩm, khách hàng, hóa đơn
-- **Bảo mật**: JWT Authentication, Spring Security, BCrypt password
-- **Database**: SQL Server với 9 bảng, 3 view, 4 trigger
-- **Validation**: Kiểm tra dữ liệu đầu vào, xử lý lỗi
+### ✨ Tính năng chính
 
-## 🆕 Tính năng nổi bật
+- 🛒 **Quản lý bán hàng**: Tạo hóa đơn nhanh chóng với giao diện trực quan
+- 📊 **Dashboard thông minh**: Biểu đồ doanh thu real-time với Chart.js
+- 📦 **Quản lý kho**: Theo dõi tồn kho, cảnh báo hết hàng
+- 👥 **Quản lý khách hàng**: CRM đơn giản với autocomplete
+- 🧾 **Quản lý hóa đơn**: Xem, chỉnh sửa, in hóa đơn chuyên nghiệp
+- 📈 **Báo cáo chi tiết**: Phân tích doanh thu, sản phẩm bán chạy
+- 🔐 **Bảo mật**: JWT authentication, phân quyền người dùng
+- 📱 **Responsive**: Hoạt động mượt mà trên mọi thiết bị
 
-### 🎯 **Tự động in hóa đơn sau thanh toán**
-- Khi nhấn "Thanh toán", hệ thống tự động mở cửa sổ in hóa đơn chính thức
-- Tránh việc quên in hóa đơn cho khách hàng
-- Hỗ trợ in hóa đơn tạm thời và hóa đơn chính thức
+## 🏗️ Kiến trúc hệ thống
 
-### 📦 **Kiểm tra tồn kho thông minh**
-- Kiểm tra thời gian thực khi thêm sản phẩm vào hóa đơn
-- Cảnh báo trực quan với badge màu sắc
-- Ngăn chặn thanh toán khi vượt tồn kho
-- Thông báo chi tiết cho từng sản phẩm
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │    Backend      │    │   Database      │
+│   React 19      │◄──►│  Spring Boot    │◄──►│  SQL Server     │
+│   TailwindCSS   │    │   Java 21       │    │                 │
+│   Chart.js      │    │   JWT Auth      │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
-### 👥 **Autocomplete khách hàng**
-- Gợi ý thông minh theo số điện thoại hoặc tên
-- Dropdown trực quan với highlight text
-- Hỗ trợ keyboard navigation (mũi tên, Enter, Escape)
-- Thêm khách hàng mới nhanh chóng
+### 🛠️ Công nghệ sử dụng
 
-### ✏️ **Sửa hóa đơn nâng cao**
-- Tìm kiếm và thêm sản phẩm mới vào hóa đơn
-- Quản lý số lượng thông minh
-- Kiểm tra tồn kho khi sửa
-- Form validation toàn diện
+#### Frontend
+- **React 19** - UI Framework hiện đại
+- **Vite** - Build tool nhanh chóng
+- **TailwindCSS** - Utility-first CSS framework
+- **Chart.js** - Thư viện biểu đồ tương tác
+- **React Router** - Navigation
+- **React Hot Toast** - Notifications
 
-### 🖨️ **Hệ thống in chuyên nghiệp**
-- In hóa đơn tạm thời (draft) và chính thức
-- Template HTML đẹp mắt, tối ưu cho A4
-- In từng hóa đơn hoặc báo cáo tổng hợp
-- Tự động mở dialog in của trình duyệt
+#### Backend
+- **Spring Boot 3.3.0** - Java framework
+- **Java 21** - LTS version mới nhất
+- **Spring Security** - Authentication & Authorization
+- **JWT** - Stateless authentication
+- **JPA/Hibernate** - ORM
+- **Maven** - Dependency management
 
-## 📋 Yêu cầu hệ thống
+#### Database
+- **SQL Server** - Enterprise database
+- **Optimized queries** - Performance tuning
+- **Proper indexing** - Fast data retrieval
 
-- **Java 21** (LTS)
-- **Node.js 18+** và **npm**
-- **SQL Server 2019+** hoặc SQL Server Express
+## 🚀 Hướng dẫn cài đặt
+
+### Yêu cầu hệ thống
+
+- **Java 21+** (LTS)
+- **Node.js 18+** 
+- **SQL Server** (hoặc SQL Server Express)
+- **Maven 3.6+**
 - **Git**
 
-## 🛠️ Cài đặt và chạy
-
 ### 1. Clone repository
+
 ```bash
-git clone <repository-url>
+git clone https://github.com/your-username/WebThanhToan.git
 cd WebThanhToan
 ```
 
-### 2. Thiết lập Database
+### 2. Cài đặt Database
+
 ```bash
+# Chạy script tạo database
 cd database
-# Chạy script thiết lập (Windows)
-./setup_database.ps1
-# hoặc
-setup_database.bat
+# Windows
+.\setup_database.bat
+# hoặc PowerShell
+.\setup_database.ps1
 ```
 
-### 3. Chạy Backend (Spring Boot)
+### 3. Cấu hình Backend
+
 ```bash
 cd backend
-# Kiểm tra Java version
-java -version
-
-# Chạy ứng dụng
-./mvnw spring-boot:run
-# hoặc sử dụng script
-./run.ps1
+# Copy và chỉnh sửa file cấu hình
+cp src/main/resources/application.properties.example src/main/resources/application.properties
+# Cập nhật thông tin database connection
 ```
 
-Backend sẽ chạy tại: `http://localhost:8080/api`
+### 4. Chạy Backend
 
-### 4. Chạy Frontend (React)
 ```bash
-# Từ thư mục gốc
+# Windows
+.\mvnw.cmd spring-boot:run
+# Linux/Mac
+./mvnw spring-boot:run
+```
+
+### 5. Cài đặt và chạy Frontend
+
+```bash
+# Cài đặt dependencies
 npm install
+# Chạy development server
 npm run dev
 ```
 
-Frontend sẽ chạy tại: `http://localhost:5173`
+### 6. Truy cập ứng dụng
 
-## 🔐 Tài khoản demo
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8080/api
 
-| Username | Password | Role |
-|----------|----------|------|
-| admin | admin123 | ADMIN |
-| manager | admin123 | USER |
-| cashier1 | admin123 | USER |
-| cashier2 | admin123 | USER |
+**Tài khoản mặc định:**
+- Username: `admin`
+- Password: `admin123`
 
-## 📁 Cấu trúc project
+## 🐳 Deploy với Docker
 
-```
-WebThanhToan/
-├── src/                    # Frontend React
-│   ├── components/         # Components tái sử dụng
-│   ├── context/           # React Context (state management)
-│   ├── pages/             # Các trang chính
-│   ├── services/          # API services
-│   └── App.jsx            # Component gốc
-├── backend/               # Backend Spring Boot
-│   ├── src/main/java/     # Source code Java
-│   ├── src/main/resources/ # Cấu hình và resources
-│   └── pom.xml            # Maven dependencies
-├── database/              # Scripts database
-│   ├── create_database.sql # Tạo schema
-│   ├── insert_sample_data.sql # Dữ liệu mẫu
-│   └── setup_database.ps1  # Script tự động
-├── public/                # Static files
-└── package.json           # Frontend dependencies
-```
+### Quick Start với Docker Compose
 
-## 🔧 Cấu hình
-
-### Database (application.yml)
-```yaml
-spring:
-  datasource:
-    url: jdbc:sqlserver://localhost:1433;instanceName=CBAOSQL;databaseName=WebThanhToan;encrypt=false;trustServerCertificate=true
-    username: sa
-    password: your_password
-```
-
-### JWT Configuration
-```yaml
-jwt:
-  secret: mySecretKey
-  expiration: 86400000  # 24 hours
-```
-
-## 🎯 API Endpoints
-
-### Authentication
-- `POST /api/auth/login` - Đăng nhập
-- `GET /api/auth/me` - Thông tin user hiện tại
-
-### Products
-- `GET /api/products` - Danh sách sản phẩm
-- `POST /api/products` - Tạo sản phẩm mới
-- `PUT /api/products/{id}` - Cập nhật sản phẩm
-- `DELETE /api/products/{id}` - Xóa sản phẩm (soft delete)
-- `GET /api/products/search?name=...` - Tìm kiếm sản phẩm
-- `GET /api/products/low-stock?threshold=10` - Sản phẩm sắp hết hàng
-
-### Customers
-- `GET /api/customers` - Danh sách khách hàng
-- `POST /api/customers` - Tạo khách hàng mới
-- `PUT /api/customers/{id}` - Cập nhật khách hàng
-- `DELETE /api/customers/{id}` - Xóa khách hàng
-
-### Invoices
-- `GET /api/invoices` - Danh sách hóa đơn
-- `POST /api/invoices` - Tạo hóa đơn mới
-- `PUT /api/invoices/{id}` - Cập nhật hóa đơn
-- `GET /api/invoices/{id}` - Chi tiết hóa đơn
-- `GET /api/invoices/filter` - Lọc hóa đơn theo ngày/trạng thái
-
-## 🗄️ Database Schema
-
-### Bảng chính
-- `users` - Quản lý người dùng
-- `products` - Danh mục sản phẩm
-- `customers` - Thông tin khách hàng
-- `invoices` - Hóa đơn bán hàng
-- `invoice_items` - Chi tiết hóa đơn
-- `inventory_transactions` - Giao dịch kho
-- `payment_transactions` - Giao dịch thanh toán
-- `system_settings` - Cài đặt hệ thống
-- `audit_logs` - Nhật ký hoạt động
-
-### Views
-- `daily_revenue_view` - Doanh thu theo ngày
-- `top_selling_products_view` - Sản phẩm bán chạy
-- `low_stock_view` - Sản phẩm sắp hết hàng
-
-## 🚀 Tính năng hoạt động
-
-### ✅ Đã hoàn thiện:
-- 🔐 Đăng nhập/đăng xuất với JWT
-- 📊 Dashboard với thống kê real-time
-- 🛍️ Quản lý sản phẩm (CRUD) với kiểm tra tồn kho
-- 👥 Quản lý khách hàng với autocomplete
-- 🧾 Quản lý hóa đơn đa tab với tự động in
-- 💰 Tính toán giá, lợi nhuận, giảm giá
-- 🔍 Tìm kiếm sản phẩm và khách hàng
-- 📱 Responsive design
-- 🎨 UI/UX hiện đại với TailwindCSS
-- 🖨️ In hóa đơn chuyên nghiệp
-- 📈 Báo cáo chi tiết với xuất CSV
-
-### 🔄 API Integration:
-- ✅ Authentication với JWT
-- ✅ CORS configuration
-- ✅ Error handling
-- ✅ Auto-logout khi token hết hạn
-- ✅ Loading states
-- ✅ Toast notifications
-
-## 🛡️ Bảo mật
-
-### ✅ Đã implement:
-- JWT Authentication với refresh token
-- Password encoding (BCrypt)
-- CORS protection
-- Input validation
-- SQL injection protection (JPA)
-- XSS protection
-
-## 📈 Performance
-
-### ✅ Tối ưu hóa:
-- Database indexing
-- Lazy loading
-- Component optimization
-- API caching
-- Responsive design
-
-## 🐛 Troubleshooting
-
-### Lỗi kết nối database
 ```bash
-# Kiểm tra SQL Server đang chạy
-services.msc -> SQL Server
+# Copy environment file
+cp env.example .env
+# Chỉnh sửa .env theo môi trường của bạn
 
-# Test kết nối
-sqlcmd -S localhost -E -Q "SELECT @@VERSION"
+# Build và chạy
+docker-compose up -d
 ```
 
-### Lỗi Java version
+### Manual Docker Build
+
 ```bash
-# Kiểm tra Java version
-java -version
+# Build frontend
+docker build -f Dockerfile.frontend -t webthanhtoan-frontend .
 
-# Đảm bảo JAVA_HOME đúng
-echo $JAVA_HOME
+# Build backend
+cd backend
+docker build -t webthanhtoan-backend .
 ```
 
-### Lỗi CORS
-- Kiểm tra cấu hình CORS trong `application.yml`
-- Đảm bảo frontend chạy trên port 5173
+## 📖 Hướng dẫn sử dụng
 
-## 🎯 Kết luận
+### 1. Đăng nhập
+- Truy cập ứng dụng và đăng nhập với tài khoản admin
+- Hệ thống sẽ chuyển hướng đến Dashboard
 
-**Dự án WebThanhToan đã sẵn sàng sử dụng trong môi trường production!**
+### 2. Quản lý sản phẩm
+- Vào **Quản lý sản phẩm** để thêm/sửa/xóa sản phẩm
+- Cập nhật giá bán, giá vốn, số lượng tồn kho
 
-- ✅ Backend hoạt động ổn định với Spring Boot
-- ✅ Frontend responsive và user-friendly với React
-- ✅ Database đầy đủ với SQL Server
-- ✅ API integration hoàn chỉnh
-- ✅ Authentication & authorization
-- ✅ Modern UI/UX design
-- ✅ Professional printing system
-- ✅ Comprehensive stock management
+### 3. Tạo hóa đơn
+- Vào **Quản lý thanh toán** để tạo hóa đơn mới
+- Tìm kiếm và thêm sản phẩm vào hóa đơn
+- Chọn khách hàng (hoặc để trống cho khách lẻ)
+- Áp dụng giảm giá nếu cần
+- Chọn phương thức thanh toán và hoàn tất
 
-**Hệ thống có thể chạy ngay lập tức và sẵn sàng cho việc triển khai thực tế.**
+### 4. Xem báo cáo
+- **Dashboard**: Xem tổng quan doanh thu với biểu đồ
+- **Báo cáo**: Phân tích chi tiết theo thời gian
+- **Danh sách hóa đơn**: Quản lý tất cả giao dịch
+
+## 🔧 Cấu hình nâng cao
+
+### Environment Variables
+
+```bash
+# Database
+DB_HOST=localhost
+DB_PORT=1433
+DB_NAME=WebThanhToan
+DB_USERNAME=sa
+DB_PASSWORD=your_password
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRATION=86400000
+
+# App
+APP_PORT=8080
+FRONTEND_URL=http://localhost:5173
+```
+
+### Production Deployment
+
+Xem chi tiết trong [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+## 🤝 Đóng góp
+
+1. Fork repository
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Tạo Pull Request
+
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📞 Liên hệ
+
+- **Email**: support@webthanhtoan.com
+- **Website**: https://webthanhtoan.com
+- **Documentation**: https://docs.webthanhtoan.com
+
+## 🙏 Acknowledgments
+
+- [React](https://reactjs.org/)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Chart.js](https://www.chartjs.org/)
+
+---
+
+**Made with ❤️ for Vietnamese businesses**

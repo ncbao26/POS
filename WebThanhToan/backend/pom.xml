@@ -10,9 +10,24 @@
     </parent>
     <groupId>com.webthanhtoan</groupId>
     <artifactId>backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>WebThanhToan Backend</name>
-    <description>Backend for WebThanhToan payment management system</description>
+    <description>Modern POS Backend API - Spring Boot application for WebThanhToan payment management system</description>
+    <url>https://github.com/your-username/WebThanhToan</url>
+    
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <name>WebThanhToan Team</name>
+            <email>support@webthanhtoan.com</email>
+        </developer>
+    </developers>
     <properties>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>

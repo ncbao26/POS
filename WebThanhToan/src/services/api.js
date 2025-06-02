@@ -272,5 +272,31 @@ export const invoicesAPI = {
       headers: getAuthHeaders()
     });
     return handleResponse(response);
+  },
+
+  // Revenue chart endpoints
+  getRevenueByDate: async (startDate, endDate) => {
+    const params = new URLSearchParams();
+    params.append('startDate', startDate);
+    params.append('endDate', endDate);
+    params.append('_t', new Date().getTime().toString()); // Avoid caching
+    
+    const response = await fetch(`${API_BASE_URL}/invoices/revenue-by-date?${params.toString()}`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  getRevenueSummary: async (date = null) => {
+    const params = new URLSearchParams();
+    if (date) {
+      params.append('date', date);
+    }
+    params.append('_t', new Date().getTime().toString()); // Avoid caching
+    
+    const response = await fetch(`${API_BASE_URL}/invoices/revenue-summary?${params.toString()}`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
   }
 }; 

@@ -19,6 +19,11 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     
     List<Invoice> findByUserAndCreatedAtBetweenOrderByCreatedAtDesc(User user, LocalDateTime startDate, LocalDateTime endDate);
     
+    // New methods for revenue chart
+    List<Invoice> findByUserAndCreatedAtBetweenOrderByCreatedAtAsc(User user, LocalDateTime startDate, LocalDateTime endDate);
+    
+    List<Invoice> findByUserAndCreatedAtBetween(User user, LocalDateTime startDate, LocalDateTime endDate);
+    
     List<Invoice> findByUserAndCreatedAtBetweenAndPaymentStatusOrderByCreatedAtDesc(User user, LocalDateTime startDate, LocalDateTime endDate, String paymentStatus);
     
     // Legacy methods (for backward compatibility)

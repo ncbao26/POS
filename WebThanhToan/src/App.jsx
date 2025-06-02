@@ -5,6 +5,7 @@ import { InvoiceProvider } from './context/InvoiceContext';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import InvoiceManagement from './pages/InvoiceManagement';
+import InvoiceNavbar from './components/InvoiceNavbar';
 import ProductManagement from './pages/ProductManagement';
 import Reports from './pages/Reports';
 import Login from './components/Login';
@@ -75,6 +76,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/invoices" element={<InvoiceManagement />} />
+                <Route path="/invoice-list" element={<InvoiceNavbar />} />
                 <Route path="/products" element={<ProductManagement />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/login" element={<Navigate to="/" replace />} />

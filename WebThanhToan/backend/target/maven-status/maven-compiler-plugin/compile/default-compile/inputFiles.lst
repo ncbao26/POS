@@ -18,7 +18,6 @@ C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webth
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\WebThanhToanApplication.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\controller\AuthController.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\repository\InvoiceRepository.java
-C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\controller\TestController.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\entity\Customer.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\security\JwtUtils.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\dto\LoginRequest.java

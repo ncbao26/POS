@@ -5,6 +5,7 @@ import {
   CreditCardIcon, 
   CubeIcon, 
   ChartBarIcon,
+  DocumentTextIcon,
   Bars3Icon,
   XMarkIcon,
   UserIcon,
@@ -18,6 +19,7 @@ const Layout = ({ children, user, onLogout }) => {
   const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Quản lý thanh toán', href: '/invoices', icon: CreditCardIcon },
+    { name: 'Danh sách hóa đơn', href: '/invoice-list', icon: DocumentTextIcon },
     { name: 'Quản lý sản phẩm', href: '/products', icon: CubeIcon },
     { name: 'Báo cáo', href: '/reports', icon: ChartBarIcon },
   ];

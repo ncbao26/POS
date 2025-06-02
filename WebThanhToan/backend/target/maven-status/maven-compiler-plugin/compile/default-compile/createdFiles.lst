@@ -1,6 +1,5 @@
 com\webthanhtoan\backend\config\DataInitializer.class
 com\webthanhtoan\backend\security\JwtUtils.class
-com\webthanhtoan\backend\controller\TestController.class
 com\webthanhtoan\backend\dto\CreateInvoiceRequest.class
 com\webthanhtoan\backend\dto\CreateInvoiceRequest$InvoiceItemRequest.class
 com\webthanhtoan\backend\repository\CustomerRepository.class
