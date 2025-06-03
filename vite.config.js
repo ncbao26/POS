@@ -5,12 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
-    host: '0.0.0.0',
+    host: true,
     port: 3000,
     strictPort: true,
   },
   preview: {
-    host: '0.0.0.0',
+    host: true,
     port: 3000,
     strictPort: true,
   },
@@ -18,7 +18,8 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser',
+    minify: false,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => ({
           router: ['react-router-dom'],
           charts: ['chart.js', 'react-chartjs-2'],
           icons: ['@heroicons/react'],
+          utils: ['date-fns', 'react-hot-toast']
         },
       },
     },
