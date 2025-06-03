@@ -42,16 +42,16 @@ RUN chown spring:spring app.jar
 # Switch to spring user
 USER spring:spring
 
-# Expose port
-EXPOSE 8080
+# Expose port (Render uses PORT environment variable)
+EXPOSE ${PORT:-8080}
 
-# JVM optimization cho laptop yếu (4GB RAM)
-# Giảm heap size và sử dụng G1GC cho performance tốt hơn
+# Environment variables for production
+ENV SPRING_PROFILES_ACTIVE=production
 ENV JAVA_OPTS="-Xms128m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200 -XX:+UseCompressedOops -XX:+OptimizeStringConcat"
 
-# Health check với timeout dài hơn cho laptop yếu
-HEALTHCHECK --interval=45s --timeout=15s --start-period=90s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-8080}/actuator/health || exit 1
 
-# Start the application
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"] 
+# Start the application with dynamic port
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"] 

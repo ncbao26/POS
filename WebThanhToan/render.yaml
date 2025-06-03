@@ -1,20 +1,16 @@
 services:
-  # Frontend Service (React + Vite)
+  # Frontend Service (React + Vite) - Web Service
   - type: web
     name: webthanhtoan-frontend
     env: node
     plan: free
     buildCommand: cd WebThanhToan && npm install && npm run build
-    startCommand: cd WebThanhToan && npm run preview
+    startCommand: cd WebThanhToan && npm run preview -- --host 0.0.0.0 --port $PORT
     envVars:
       - key: NODE_ENV
         value: production
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: webthanhtoan-backend
-          property: host
-    staticPublishPath: ./WebThanhToan/dist
+        value: https://webthanhtoan-backend.onrender.com
 
   # Backend Service (Spring Boot)
   - type: web
@@ -29,28 +25,12 @@ services:
       - key: SERVER_PORT
         value: 10000
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: webthanhtoan-db
-          property: connectionString
+        value: postgresql://webthanhtoan_user:kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u@dpg-d0v7dt63jp1c73ds1q6g-a/webthanhtoan
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: webthanhtoan-db
-          property: user
+        value: webthanhtoan_user
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: webthanhtoan-db
-          property: password
+        value: kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: webthanhtoan-frontend
-          property: host
-
-  # Database Service (PostgreSQL - since Render doesn't support SQL Server)
-  - type: postgres
-    name: webthanhtoan-db
-    plan: free
-    databaseName: webthanhtoan
-    user: webthanhtoan_user 
+        value: https://webthanhtoan-frontend.onrender.com 
