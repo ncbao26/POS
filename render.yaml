@@ -1,86 +1,43 @@
 services:
-<<<<<<< HEAD
-  # Frontend Service (React + Vite)
-=======
-  # Frontend Service (React + Vite) - Web Service
->>>>>>> 9c08fd5259346743904bb84b44be30c533f9b7d8
-  - type: web
-    name: webthanhtoan-frontend
-    env: node
+  # PostgreSQL Database
+  - type: pgsql
+    name: pos-database
+    databaseName: pos_db
+    user: pos_user
     plan: free
-<<<<<<< HEAD
-    buildCommand: npm install && npm run build
-    startCommand: npm run preview
-=======
-    buildCommand: cd WebThanhToan && npm install && npm run build
-    startCommand: cd WebThanhToan && npm run preview -- --host 0.0.0.0 --port $PORT
->>>>>>> 9c08fd5259346743904bb84b44be30c533f9b7d8
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: VITE_API_URL
-<<<<<<< HEAD
-        fromService:
-          type: web
-          name: webthanhtoan-backend
-          property: host
-    staticPublishPath: ./dist
-=======
-        value: https://webthanhtoan-backend.onrender.com
->>>>>>> 9c08fd5259346743904bb84b44be30c533f9b7d8
 
-  # Backend Service (Spring Boot)
+  # Spring Boot Backend
   - type: web
-    name: webthanhtoan-backend
+    name: pos-backend
     env: java
     plan: free
-<<<<<<< HEAD
-    buildCommand: cd backend && ./mvnw clean package -DskipTests
-    startCommand: cd backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
-=======
     buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
-    startCommand: cd WebThanhToan/backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
->>>>>>> 9c08fd5259346743904bb84b44be30c533f9b7d8
+    startCommand: cd WebThanhToan/backend && java -jar target/backend-1.0.0.jar --spring.profiles.active=production
     envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: production
-      - key: SERVER_PORT
-        value: 10000
-      - key: SPRING_DATASOURCE_URL
-<<<<<<< HEAD
+      - key: DATABASE_URL
         fromDatabase:
-          name: webthanhtoan-db
+          name: pos-database
           property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
-          name: webthanhtoan-db
+          name: pos-database
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
-          name: webthanhtoan-db
+          name: pos-database
           property: password
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: webthanhtoan-frontend
-          property: host
+        value: https://pos-frontend.onrender.com,http://localhost:3000
 
-  # Database Service (PostgreSQL - since Render doesn't support SQL Server)
-  - type: pgsql
-    name: webthanhtoan-db
+  # React Frontend
+  - type: web
+    name: pos-frontend
+    env: static
     plan: free
-    databaseName: webthanhtoan
-    user: webthanhtoan_user 
-=======
-        value: postgresql://webthanhtoan_user:kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u@dpg-d0v7dt63jp1c73ds1q6g-a/webthanhtoan
-      - key: SPRING_DATASOURCE_USERNAME
-        value: webthanhtoan_user
-      - key: SPRING_DATASOURCE_PASSWORD
-        value: kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u
-      - key: JWT_SECRET
-        generateValue: true
-      - key: CORS_ALLOWED_ORIGINS
-        value: https://webthanhtoan-frontend.onrender.com 
->>>>>>> 9c08fd5259346743904bb84b44be30c533f9b7d8
+    buildCommand: cd WebThanhToan && npm ci && npm run build
+    staticPublishPath: WebThanhToan/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://pos-backend.onrender.com 
