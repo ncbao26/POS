@@ -6,7 +6,7 @@
 # =============================================================================
 # DATABASE CONFIGURATION (Render PostgreSQL)
 # =============================================================================
-DATABASE_URL=postgresql://pos_user:mSGLyGwgs1usyKfvCmgWLH9WLvQOrVDE@dpg-d0vc7eh5pdvs738bf6h0-a/pos_db_nofc
+DATABASE_URL=jdbc:postgresql://dpg-d0vc7eh5pdvs738bf6h0-a.singapore-postgres.render.com:5432/pos_db_nofc
 DB_DRIVER=org.postgresql.Driver
 DB_USERNAME=pos_user
 DB_PASSWORD=mSGLyGwgs1usyKfvCmgWLH9WLvQOrVDE
