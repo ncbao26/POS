@@ -1,20 +1,21 @@
 # =============================================================================
 # FRONTEND ENVIRONMENT VARIABLES FOR RENDER DEPLOYMENT
 # Copy ONLY these variables to Frontend Web Service
+# Service Name: mixxstorepos-frontend
 # =============================================================================
 
 # =============================================================================
 # API CONFIGURATION
 # =============================================================================
 # Backend API URL - Update with your actual backend URL
-VITE_API_URL=https://pos-backend.onrender.com
+VITE_API_URL=https://mixxstorepos-backend.onrender.com
 
 # =============================================================================
 # APPLICATION CONFIGURATION
 # =============================================================================
-VITE_APP_NAME=WebThanhToan POS
+VITE_APP_NAME=MixxStore POS
 VITE_VERSION=1.0.0
-VITE_APP_DESCRIPTION=Modern Point of Sale System
+VITE_APP_DESCRIPTION=Modern Point of Sale System for MixxStore
 
 # =============================================================================
 # BUILD CONFIGURATION

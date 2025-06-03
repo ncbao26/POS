@@ -1,6 +1,7 @@
 # =============================================================================
 # BACKEND ENVIRONMENT VARIABLES FOR RENDER DEPLOYMENT
 # Copy ONLY these variables to Backend Web Service
+# Service Name: mixxstorepos-backend
 # =============================================================================
 
 # =============================================================================
@@ -42,13 +43,13 @@ FLYWAY_VALIDATE_ON_MIGRATE=false
 # =============================================================================
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=secure-admin-password-change-this
-JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-secure-at-least-32-characters-long-for-production
+JWT_SECRET=mixxstorepos-super-secret-jwt-key-here-make-it-long-and-secure-at-least-32-characters-long-for-production
 JWT_EXPIRATION=86400000
 
 # =============================================================================
 # CORS CONFIGURATION
 # =============================================================================
-CORS_ALLOWED_ORIGINS=https://pos-frontend.onrender.com,http://localhost:3000
+CORS_ALLOWED_ORIGINS=https://mixxstorepos-frontend.onrender.com,http://localhost:3000
 CORS_ALLOWED_METHODS=GET,POST,PUT,DELETE,OPTIONS
 CORS_ALLOWED_HEADERS=*
 CORS_ALLOW_CREDENTIALS=true
