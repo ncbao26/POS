@@ -1,4 +1,22 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+// API Configuration với support cho environment variables
+const getApiBaseUrl = () => {
+  // Trong Docker, sử dụng environment variable hoặc relative path
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // Trong production với Docker, API sẽ được proxy qua nginx
+  if (import.meta.env.PROD) {
+    return '/api';
+  }
+  
+  // Development fallback
+  return 'http://localhost:8080/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+console.log('API Base URL:', API_BASE_URL);
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {

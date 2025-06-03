@@ -9,6 +9,9 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+# Make mvnw executable
+RUN chmod +x ./mvnw
+
 # Download dependencies
 RUN ./mvnw dependency:go-offline -B
 
@@ -20,6 +23,9 @@ RUN ./mvnw clean package -DskipTests
 
 # Production stage
 FROM openjdk:21-jre-slim
+
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Create app user
 RUN addgroup --system spring && adduser --system spring --ingroup spring
@@ -39,11 +45,12 @@ USER spring:spring
 # Expose port
 EXPOSE 8080
 
-# JVM optimization for production
-ENV JAVA_OPTS="-Xms512m -Xmx1024m -XX:+UseG1GC -XX:+UseStringDeduplication"
+# JVM optimization cho laptop yếu (4GB RAM)
+# Giảm heap size và sử dụng G1GC cho performance tốt hơn
+ENV JAVA_OPTS="-Xms128m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200 -XX:+UseCompressedOops -XX:+OptimizeStringConcat"
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+# Health check với timeout dài hơn cho laptop yếu
+HEALTHCHECK --interval=45s --timeout=15s --start-period=90s --retries=3 \
   CMD curl -f http://localhost:8080/actuator/health || exit 1
 
 # Start the application

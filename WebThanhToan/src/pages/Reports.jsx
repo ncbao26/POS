@@ -26,6 +26,14 @@ const Reports = () => {
   // New states for recent transactions and low stock
   const [recentInvoices, setRecentInvoices] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
+  
+  // States for comparison data
+  const [comparisonStats, setComparisonStats] = useState({
+    revenueGrowth: 0,
+    transactionGrowth: 0,
+    avgOrderGrowth: 0,
+    discountGrowth: 0
+  });
 
   useEffect(() => {
     loadReports();
@@ -35,7 +43,6 @@ const Reports = () => {
   // Auto refresh every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('Auto-refreshing reports...');
       loadReports();
       loadRecentData();
     }, 30000); // 30 seconds
@@ -46,7 +53,6 @@ const Reports = () => {
   // Refresh when user focuses on window (comes back to tab)
   useEffect(() => {
     const handleFocus = () => {
-      console.log('Window focused, refreshing reports...');
       loadReports();
       loadRecentData();
     };
@@ -58,8 +64,6 @@ const Reports = () => {
   const loadReports = async () => {
     try {
       setLoading(true);
-      console.log('Loading reports with params:', { dateRange, startDate, endDate, paymentStatus });
-      
       let data;
       
       // Add timestamp to avoid caching
@@ -114,6 +118,9 @@ const Reports = () => {
       console.log('Reports data loaded:', data?.length || 0, 'invoices at', new Date().toLocaleTimeString());
       setInvoices(Array.isArray(data) ? data : []);
       setLastUpdated(new Date());
+      
+      // Calculate comparison stats
+      await calculateComparisonStats(data);
     } catch (error) {
       console.error('Error loading reports:', error);
       toast.error('Không thể tải báo cáo. Vui lòng thử lại.');
@@ -123,8 +130,113 @@ const Reports = () => {
     }
   };
 
-  const calculateStats = () => {
-    const paidInvoices = invoices.filter(inv => inv.paymentStatus === 'PAID');
+  const calculateComparisonStats = async (currentData) => {
+    try {
+      // Get comparison period data
+      const today = new Date();
+      let comparisonStartDate, comparisonEndDate;
+      
+      switch (dateRange) {
+        case 'today':
+          // So sánh với hôm qua
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          comparisonStartDate = comparisonEndDate = yesterday.toISOString().split('T')[0];
+          break;
+        case 'week':
+          // So sánh với tuần trước
+          const twoWeeksAgo = new Date(today);
+          twoWeeksAgo.setDate(today.getDate() - 14);
+          const weekAgo = new Date(today);
+          weekAgo.setDate(today.getDate() - 7);
+          comparisonStartDate = twoWeeksAgo.toISOString().split('T')[0];
+          comparisonEndDate = weekAgo.toISOString().split('T')[0];
+          break;
+        case 'month':
+          // So sánh với tháng trước
+          const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+          const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+          comparisonStartDate = lastMonthStart.toISOString().split('T')[0];
+          comparisonEndDate = lastMonthEnd.toISOString().split('T')[0];
+          break;
+        case 'year':
+          // So sánh với năm trước
+          const lastYearStart = new Date(today.getFullYear() - 1, 0, 1);
+          const lastYearEnd = new Date(today.getFullYear() - 1, 11, 31);
+          comparisonStartDate = lastYearStart.toISOString().split('T')[0];
+          comparisonEndDate = lastYearEnd.toISOString().split('T')[0];
+          break;
+        case 'custom':
+          if (startDate && endDate) {
+            // Tính khoảng thời gian tương đương trước đó
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const daysDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            
+            const comparisonEnd = new Date(start);
+            comparisonEnd.setDate(comparisonEnd.getDate() - 1);
+            const comparisonStart = new Date(comparisonEnd);
+            comparisonStart.setDate(comparisonStart.getDate() - daysDiff);
+            
+            comparisonStartDate = comparisonStart.toISOString().split('T')[0];
+            comparisonEndDate = comparisonEnd.toISOString().split('T')[0];
+          }
+          break;
+        default:
+          // Không có so sánh cho 'all'
+          setComparisonStats({
+            revenueGrowth: 0,
+            transactionGrowth: 0,
+            avgOrderGrowth: 0,
+            discountGrowth: 0
+          });
+          return;
+      }
+
+      if (comparisonStartDate && comparisonEndDate) {
+        const comparisonData = await invoicesAPI.getByDateRange(comparisonStartDate, comparisonEndDate, paymentStatus || null);
+        
+        // Calculate current stats
+        const currentStats = calculateStats(currentData);
+        const comparisonStatsData = calculateStats(comparisonData);
+        
+        // Calculate growth percentages
+        const revenueGrowth = comparisonStatsData.totalRevenue > 0 
+          ? ((currentStats.totalRevenue - comparisonStatsData.totalRevenue) / comparisonStatsData.totalRevenue) * 100 
+          : currentStats.totalRevenue > 0 ? 100 : 0;
+          
+        const transactionGrowth = comparisonStatsData.totalInvoices > 0 
+          ? ((currentStats.totalInvoices - comparisonStatsData.totalInvoices) / comparisonStatsData.totalInvoices) * 100 
+          : currentStats.totalInvoices > 0 ? 100 : 0;
+          
+        const avgOrderGrowth = comparisonStatsData.averageOrderValue > 0 
+          ? ((currentStats.averageOrderValue - comparisonStatsData.averageOrderValue) / comparisonStatsData.averageOrderValue) * 100 
+          : currentStats.averageOrderValue > 0 ? 100 : 0;
+          
+        const discountGrowth = comparisonStatsData.totalDiscount > 0 
+          ? ((currentStats.totalDiscount - comparisonStatsData.totalDiscount) / comparisonStatsData.totalDiscount) * 100 
+          : currentStats.totalDiscount > 0 ? 100 : 0;
+
+        setComparisonStats({
+          revenueGrowth: Math.round(revenueGrowth * 100) / 100,
+          transactionGrowth: Math.round(transactionGrowth * 100) / 100,
+          avgOrderGrowth: Math.round(avgOrderGrowth * 100) / 100,
+          discountGrowth: Math.round(discountGrowth * 100) / 100
+        });
+      }
+    } catch (error) {
+      console.error('Error calculating comparison stats:', error);
+      setComparisonStats({
+        revenueGrowth: 0,
+        transactionGrowth: 0,
+        avgOrderGrowth: 0,
+        discountGrowth: 0
+      });
+    }
+  };
+
+  const calculateStats = (data = invoices) => {
+    const paidInvoices = data.filter(inv => inv.paymentStatus === 'PAID');
     
     const totalRevenue = paidInvoices.reduce((sum, inv) => sum + (inv.totalAmount || 0), 0);
     const totalInvoices = paidInvoices.length;
@@ -192,8 +304,10 @@ const Reports = () => {
     }).format(amount || 0);
   };
 
-  const stats = calculateStats();
-  const paymentMethods = getTopPaymentMethods();
+  const formatPercentage = (percentage) => {
+    const sign = percentage > 0 ? '+' : '';
+    return `${sign}${percentage.toFixed(1)}%`;
+  };
 
   const getDateRangeText = () => {
     switch (dateRange) {
@@ -232,7 +346,9 @@ const Reports = () => {
         </div>
         {trend && (
           <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
-            trend.type === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            trend.type === 'up' ? 'bg-green-100 text-green-700' : 
+            trend.type === 'down' ? 'bg-red-100 text-red-700' : 
+            'bg-gray-100 text-gray-700'
           }`}>
             <ArrowTrendingUpIcon className={`h-3 w-3 ${trend.type === 'down' ? 'rotate-180' : ''}`} />
             <span>{trend.value}</span>
@@ -263,6 +379,9 @@ const Reports = () => {
       </div>
     );
   }
+
+  const stats = calculateStats();
+  const paymentMethods = getTopPaymentMethods();
 
   return (
     <div className="space-y-6">
@@ -381,7 +500,10 @@ const Reports = () => {
           icon={CurrencyDollarIcon}
           color="bg-gradient-to-br from-green-500 to-green-600"
           subtitle={`${stats.totalInvoices} giao dịch`}
-          trend={{ type: 'up', value: '+12%' }}
+          trend={{ 
+            type: comparisonStats.revenueGrowth >= 0 ? 'up' : 'down', 
+            value: formatPercentage(comparisonStats.revenueGrowth)
+          }}
         />
         
         <StatCard
@@ -390,7 +512,10 @@ const Reports = () => {
           icon={ShoppingBagIcon}
           color="bg-gradient-to-br from-blue-500 to-blue-600"
           subtitle={`Trung bình: ${formatCurrency(stats.averageOrderValue)}`}
-          trend={{ type: 'up', value: '+8%' }}
+          trend={{ 
+            type: comparisonStats.transactionGrowth >= 0 ? 'up' : 'down', 
+            value: formatPercentage(comparisonStats.transactionGrowth)
+          }}
         />
         
         <StatCard
@@ -398,16 +523,23 @@ const Reports = () => {
           value={formatCurrency(stats.averageOrderValue)}
           icon={ArrowTrendingUpIcon}
           color="bg-gradient-to-br from-purple-500 to-purple-600"
-          trend={{ type: 'up', value: '+5%' }}
+          subtitle="Giá trị đơn hàng"
+          trend={{ 
+            type: comparisonStats.avgOrderGrowth >= 0 ? 'up' : 'down', 
+            value: formatPercentage(comparisonStats.avgOrderGrowth)
+          }}
         />
-
+        
         <StatCard
           title="Tổng giảm giá"
           value={formatCurrency(stats.totalDiscount)}
           icon={ChartBarIcon}
           color="bg-gradient-to-br from-orange-500 to-orange-600"
-          subtitle="Khuyến mãi"
-          trend={{ type: 'down', value: '-2%' }}
+          subtitle="Khuyến mãi áp dụng"
+          trend={{ 
+            type: comparisonStats.discountGrowth >= 0 ? 'up' : 'down', 
+            value: formatPercentage(comparisonStats.discountGrowth)
+          }}
         />
       </div>
 

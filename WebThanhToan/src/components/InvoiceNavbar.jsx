@@ -143,20 +143,12 @@ const InvoiceNavbar = () => {
 
   const handleEditInvoice = async (invoice) => {
     try {
-      console.log('=== DEBUG: Starting handleEditInvoice ===');
-      console.log('Invoice input:', invoice);
-      
       // Get full invoice details
       const fullInvoice = await invoicesAPI.getById(invoice.id);
-      console.log('=== Full invoice data from API ===');
       console.log('Full invoice:', JSON.stringify(fullInvoice, null, 2));
-      console.log('Invoice items:', fullInvoice.items);
-      
       if (fullInvoice.items && fullInvoice.items.length > 0) {
-        console.log('=== First item structure ===');
         console.log('First item:', JSON.stringify(fullInvoice.items[0], null, 2));
-        console.log('Product in first item:', fullInvoice.items[0].product);
-      }
+        }
       
       setEditingInvoice(fullInvoice);
       
@@ -168,9 +160,6 @@ const InvoiceNavbar = () => {
         discountPercentage: fullInvoice.discountPercentage || 0,
         notes: fullInvoice.notes || '',
         items: fullInvoice.items?.map((item, index) => {
-          console.log(`=== Processing item ${index} ===`);
-          console.log('Item:', item);
-          
           // Xử lý productId từ nhiều nguồn khác nhau
           let productId = null;
           if (item.product && item.product.id) {
@@ -178,8 +167,6 @@ const InvoiceNavbar = () => {
           } else if (item.productId) {
             productId = parseInt(item.productId);
           }
-          
-          console.log('Resolved productId:', productId);
           
           return {
             productId: productId,
@@ -190,10 +177,7 @@ const InvoiceNavbar = () => {
         }) || []
       };
       
-      console.log('=== Form data prepared ===');
       console.log('Form data:', JSON.stringify(formData, null, 2));
-      console.log('Available products:', products.length, 'products');
-      
       setEditForm(formData);
       
       // Reset search states
@@ -245,7 +229,6 @@ const InvoiceNavbar = () => {
         }))
       };
 
-      console.log('Updating invoice with data:', invoiceData);
       await invoicesAPI.update(editingInvoice.id, invoiceData);
       
       toast.success('Hóa đơn đã được cập nhật thành công');
@@ -262,7 +245,6 @@ const InvoiceNavbar = () => {
       // Nếu hóa đơn không có items hoặc items rỗng, lấy chi tiết đầy đủ từ API
       let fullInvoice = invoice;
       if (!invoice.items || invoice.items.length === 0) {
-        console.log('Fetching full invoice details for printing...');
         fullInvoice = await invoicesAPI.getById(invoice.id);
       }
 

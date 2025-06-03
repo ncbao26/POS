@@ -77,3 +77,36 @@ Thumbs.db
 # Application specific
 application-local.yml
 application-local.properties
+
+# Deployment
+.vercel
+.netlify
+.firebase
+.aws
+.gcp
+
+# Cache
+.cache
+.parcel-cache
+.next
+.nuxt
+
+# Coverage
+coverage/
+*.lcov
+
+# Temporary
+temp/
+tmp/
+
+# User creation scripts (auto-cleanup)
+add_mixxstore_user.ps1
+create_mixxstore_user.sql
+ADD_USER_GUIDE.md
+database/add_mixxstore_user.sql
+cleanup.ps1
+remove_console_logs.ps1
+
+# Development helpers
+*.ps1.bak
+*.sql.bak

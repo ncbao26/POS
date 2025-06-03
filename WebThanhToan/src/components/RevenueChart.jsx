@@ -46,10 +46,7 @@ const RevenueChart = () => {
       const startDate = format(startOfMonth(month), 'yyyy-MM-dd');
       const endDate = format(endOfMonth(month), 'yyyy-MM-dd');
       
-      console.log('Fetching revenue data for:', startDate, 'to', endDate);
       const data = await invoicesAPI.getRevenueByDate(startDate, endDate);
-      console.log('Revenue data received:', data);
-      
       setRevenueData(data);
       await calculateComparisons(data, month);
       generateChartData(data, month);
@@ -62,7 +59,6 @@ const RevenueChart = () => {
         setError('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
       } else if (retryCount < maxRetries && !isRetry) {
         // Retry logic
-        console.log(`Retrying... Attempt ${retryCount + 1}/${maxRetries}`);
         setRetryCount(prev => prev + 1);
         setTimeout(() => {
           fetchRevenueData(month, true);
@@ -114,10 +110,7 @@ const RevenueChart = () => {
       const lastMonthStart = format(startOfMonth(lastMonth), 'yyyy-MM-dd');
       const lastMonthEnd = format(endOfMonth(lastMonth), 'yyyy-MM-dd');
       
-      console.log('Fetching last month data for comparison:', lastMonthStart, 'to', lastMonthEnd);
       const lastMonthData = await invoicesAPI.getRevenueByDate(lastMonthStart, lastMonthEnd);
-      console.log('Last month data received:', lastMonthData);
-      
       const lastMonthTotal = lastMonthData.reduce((sum, item) => sum + item.revenue, 0);
       
       if (lastMonthTotal > 0) {

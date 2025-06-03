@@ -15,7 +15,7 @@ import {
 import toast from 'react-hot-toast';
 
 const ProductManagement = () => {
-  const { state, addProduct, updateProduct, deleteProduct, loadProducts } = useInvoice();
+  const { state, addProduct, updateProduct, deleteProduct, loadProducts, clearError } = useInvoice();
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -31,14 +31,20 @@ const ProductManagement = () => {
 
   // Load products when component mounts
   useEffect(() => {
-    if (state.products.length === 0) {
-      console.log('ProductManagement: Loading products...');
+    if (state.products.length === 0 && !state.loading) {
       loadProducts();
     }
-  }, [loadProducts, state.products.length]);
+  }, []); // Remove dependencies to prevent infinite loop
 
-  const filteredProducts = state.products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Clear error when component unmounts or when products are successfully loaded
+  useEffect(() => {
+    if (state.products.length > 0 && state.error) {
+      clearError();
+    }
+  }, [state.products.length, state.error, clearError]);
+
+  const filteredProducts = (state.products || []).filter(product =>
+    product && product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -308,10 +314,22 @@ const ProductManagement = () => {
         </button>
       </div>
 
-      {/* Error Message */}
-      {state.error && (
+      {/* Error Message - chỉ hiển thị khi có lỗi và chưa có products */}
+      {state.error && state.products.length === 0 && !state.loading && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <p className="text-red-600">{state.error}</p>
+          <div className="flex items-center space-x-2">
+            <ExclamationTriangleIcon className="h-5 w-5 text-red-600" />
+            <p className="text-red-600 font-medium">{state.error}</p>
+          </div>
+          <button
+            onClick={() => {
+              clearError();
+              loadProducts();
+            }}
+            className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+          >
+            Thử lại
+          </button>
         </div>
       )}
 

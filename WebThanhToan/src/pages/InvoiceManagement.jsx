@@ -12,12 +12,14 @@ import {
   UserPlusIcon,
   ReceiptPercentIcon,
   PrinterIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
+  TrashIcon,
+  CubeIcon
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
 const InvoiceManagement = () => {
-  const { state, dispatch, addCustomer, createInvoice, validateStock, validateInvoiceStock, loadProducts, loadCustomers } = useInvoice();
+  const { state, dispatch, addCustomer, createInvoice, validateStock, validateInvoiceStock, loadProducts, loadCustomers, clearTabsFromLocalStorage } = useInvoice();
   const [searchTerm, setSearchTerm] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [newCustomerName, setNewCustomerName] = useState('');
@@ -29,23 +31,57 @@ const InvoiceManagement = () => {
   const [showCustomerSuggestions, setShowCustomerSuggestions] = useState(false);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Load products and customers when component mounts
+  // Load products and customers when component mounts - only once
   useEffect(() => {
-    if (state.products.length === 0) {
-      console.log('InvoiceManagement: Loading products...');
-      loadProducts();
-    }
-    if (state.customers.length === 0) {
-      console.log('InvoiceManagement: Loading customers...');
-      loadCustomers();
-    }
-  }, [loadProducts, loadCustomers, state.products.length, state.customers.length]);
+    const initializeData = async () => {
+      if (!dataLoaded) {
+        try {
+          const promises = [];
+          if (state.products.length === 0) {
+            promises.push(loadProducts());
+          }
+          if (state.customers.length === 0) {
+            promises.push(loadCustomers());
+          }
+          
+          if (promises.length > 0) {
+            await Promise.all(promises);
+          }
+          setDataLoaded(true);
+        } catch (error) {
+          console.error('Error loading initial data:', error);
+          setDataLoaded(true); // Set to true even on error to prevent infinite loading
+        }
+      }
+    };
 
+    initializeData();
+  }, []); // Empty dependency array - only run once
+
+  // Khai báo activeTab và filteredProducts với safe checks
   const activeTab = state.tabs.find(tab => tab.id === state.activeTabId);
-  const filteredProducts = state.products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = (state.products || []).filter(product =>
+    product && product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Tự động tạo tab mặc định nếu không có activeTab
+  useEffect(() => {
+    if (dataLoaded && !activeTab && state.tabs.length === 0) {
+      dispatch({ type: 'ADD_TAB' });
+    }
+  }, [activeTab, state.tabs.length, dispatch, dataLoaded]);
+
+  // Hàm xóa tất cả dữ liệu localStorage
+  const handleClearAllData = () => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa tất cả dữ liệu hóa đơn đã lưu? Hành động này không thể hoàn tác.')) {
+      clearTabsFromLocalStorage();
+      // Reset về trạng thái ban đầu
+      dispatch({ type: 'RESET_TO_INITIAL' });
+      toast.success('Đã xóa tất cả dữ liệu hóa đơn');
+    }
+  };
 
   const handleAddTab = () => {
     dispatch({ type: 'ADD_TAB' });
@@ -94,6 +130,9 @@ const InvoiceManagement = () => {
       payload: { tabId: state.activeTabId, productId }
     });
     toast.success('Đã thêm sản phẩm vào hóa đơn');
+    
+    // Clear search term sau khi thêm sản phẩm thành công
+    setSearchTerm('');
   };
 
   const handleUpdateQuantity = (productId, quantity) => {
@@ -312,15 +351,36 @@ const InvoiceManagement = () => {
     }
 
     try {
+      const currentTabName = activeTab.name;
+      const hasMultipleTabs = state.tabs.length > 1;
+      
       const invoice = await createInvoice(state.activeTabId);
-      toast.success(`Thanh toán thành công! Mã hóa đơn: ${invoice.invoiceNumber}`);
+      
+      // Thông báo thanh toán thành công với thông tin về tab
+      if (hasMultipleTabs) {
+        toast.success(`Thanh toán thành công! Mã hóa đơn: ${invoice.invoiceNumber}\n${currentTabName} đã được đóng, chuyển sang tab khác.`, {
+          duration: 4000,
+          style: {
+            whiteSpace: 'pre-line',
+            maxWidth: '500px'
+          }
+        });
+      } else {
+        toast.success(`Thanh toán thành công! Mã hóa đơn: ${invoice.invoiceNumber}\nĐã tạo hóa đơn mới để tiếp tục.`, {
+          duration: 4000,
+          style: {
+            whiteSpace: 'pre-line',
+            maxWidth: '500px'
+          }
+        });
+      }
       
       // Tự động in hóa đơn sau khi thanh toán thành công
       setTimeout(() => {
         handlePrintCompletedInvoice(invoice);
       }, 500); // Delay nhỏ để đảm bảo toast hiển thị trước
       
-      // Reset form
+      // Reset form states (không cần reset tab vì đã được xóa)
       setCustomerPhone('');
       setDiscountAmount(0);
       setItemDiscounts({});
@@ -1246,18 +1306,33 @@ const InvoiceManagement = () => {
     );
   };
 
+  // Thêm loading state khi đang load products hoặc customers
+  if (!dataLoaded || state.loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-slate-500">Đang tải dữ liệu...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!activeTab) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-slate-500 mb-4">Không có tab thanh toán nào</p>
-          <button onClick={handleAddTab} className="btn-primary">
+          <p className="text-slate-500 mb-4">Đang khởi tạo hóa đơn...</p>
+          <button onClick={handleAddTab} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             Tạo hóa đơn mới
           </button>
         </div>
       </div>
     );
   }
+
+  // Kiểm tra nếu không có sản phẩm nào trong hệ thống
+  const hasNoProducts = !state.products || state.products.length === 0;
 
   return (
     <div className="space-y-6">
@@ -1269,13 +1344,27 @@ const InvoiceManagement = () => {
           </h1>
           <p className="text-slate-600 mt-1">Tạo và quản lý hóa đơn bán hàng</p>
         </div>
-        <button 
-          onClick={handleAddTab} 
-          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
-        >
-          <PlusIcon className="h-5 w-5" />
-          <span>Thêm hóa đơn mới</span>
-        </button>
+        <div className="flex items-center space-x-3">
+          {/* Nút xóa dữ liệu localStorage */}
+          {state.tabs.some(tab => tab.items.length > 0) && (
+            <button 
+              onClick={handleClearAllData}
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-xl font-medium shadow-lg shadow-red-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
+              title="Xóa tất cả dữ liệu hóa đơn đã lưu"
+            >
+              <TrashIcon className="h-5 w-5" />
+              <span>Xóa dữ liệu</span>
+            </button>
+          )}
+          
+          <button 
+            onClick={handleAddTab} 
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
+          >
+            <PlusIcon className="h-5 w-5" />
+            <span>Thêm hóa đơn mới</span>
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -1638,58 +1727,88 @@ const InvoiceManagement = () => {
             {/* Search Results */}
             {searchTerm && (
               <div className="mt-4 max-h-60 overflow-y-auto">
-                <div className="space-y-2">
-                  {filteredProducts.map((product) => {
-                    const isOutOfStock = product.stock === 0;
-                    const isLowStock = product.stock > 0 && product.stock <= 10;
-                    
-                    return (
-                      <div
-                        key={product.id}
-                        className={`p-3 border rounded-lg transition-all ${
-                          isOutOfStock 
-                            ? 'border-red-200 bg-red-50 cursor-not-allowed opacity-75' 
-                            : isLowStock
-                            ? 'border-yellow-200 bg-yellow-50 cursor-pointer hover:border-yellow-300 hover:bg-yellow-100'
-                            : 'border-slate-200 bg-white cursor-pointer hover:border-blue-300 hover:bg-blue-50'
-                        }`}
-                        onClick={() => !isOutOfStock && handleAddProduct(product.id)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-medium text-slate-900">{highlightText(product.name, searchTerm)}</h4>
-                            <p className="text-sm text-blue-600 font-semibold">{formatCurrency(product.price)}</p>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                                isOutOfStock
-                                  ? 'bg-red-100 text-red-800'
-                                  : isLowStock
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : 'bg-green-100 text-green-800'
-                              }`}>
-                                {isOutOfStock ? 'Hết hàng' : isLowStock ? 'Sắp hết' : 'Còn hàng'}
-                              </span>
-                              <span className="text-xs text-slate-500">
-                                {isOutOfStock ? '0 sản phẩm' : `${product.stock} sản phẩm`}
-                              </span>
+                {hasNoProducts ? (
+                  <div className="text-center py-8">
+                    <CubeIcon className="h-12 w-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-slate-500 text-sm">Chưa có sản phẩm nào trong hệ thống</p>
+                    <p className="text-slate-400 text-xs mt-1">Vui lòng thêm sản phẩm từ trang Quản lý sản phẩm</p>
+                  </div>
+                ) : filteredProducts.length === 0 ? (
+                  <div className="text-center py-8">
+                    <CubeIcon className="h-12 w-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-slate-500 text-sm">Không tìm thấy sản phẩm nào</p>
+                    <p className="text-slate-400 text-xs mt-1">Thử tìm kiếm với từ khóa khác</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {filteredProducts.map((product) => {
+                      const isOutOfStock = product.stock === 0;
+                      const isLowStock = product.stock > 0 && product.stock <= 10;
+                      
+                      return (
+                        <div
+                          key={product.id}
+                          className={`p-3 border rounded-lg transition-all ${
+                            isOutOfStock 
+                              ? 'border-red-200 bg-red-50 cursor-not-allowed opacity-75' 
+                              : isLowStock
+                              ? 'border-yellow-200 bg-yellow-50 cursor-pointer hover:border-yellow-300 hover:bg-yellow-100'
+                              : 'border-slate-200 bg-white cursor-pointer hover:border-blue-300 hover:bg-blue-50'
+                          }`}
+                          onClick={() => !isOutOfStock && handleAddProduct(product.id)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-slate-900">{highlightText(product.name, searchTerm)}</h4>
+                              <p className="text-sm text-blue-600 font-semibold">{formatCurrency(product.price)}</p>
+                              <div className="flex items-center space-x-2 mt-1">
+                                <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
+                                  isOutOfStock
+                                    ? 'bg-red-100 text-red-800'
+                                    : isLowStock
+                                    ? 'bg-yellow-100 text-yellow-800'
+                                    : 'bg-green-100 text-green-800'
+                                }`}>
+                                  {isOutOfStock ? 'Hết hàng' : isLowStock ? 'Sắp hết' : 'Còn hàng'}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {isOutOfStock ? '0 sản phẩm' : `${product.stock} sản phẩm`}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              {isOutOfStock ? (
+                                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                  <XMarkIcon className="h-4 w-4 text-red-600" />
+                                </div>
+                              ) : (
+                                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
+                                  <PlusIcon className="h-4 w-4 text-blue-600" />
+                                </div>
+                              )}
                             </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            {isOutOfStock ? (
-                              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                                <XMarkIcon className="h-4 w-4 text-red-600" />
-                              </div>
-                            ) : (
-                              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
-                                <PlusIcon className="h-4 w-4 text-blue-600" />
-                              </div>
-                            )}
-                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Empty state when no search term */}
+            {!searchTerm && hasNoProducts && (
+              <div className="mt-4 text-center py-8 bg-slate-50 rounded-lg border-2 border-dashed border-slate-300">
+                <CubeIcon className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-500 text-lg font-medium">Chưa có sản phẩm nào</p>
+                <p className="text-slate-400 text-sm mt-2">Vui lòng thêm sản phẩm từ trang Quản lý sản phẩm để bắt đầu tạo hóa đơn</p>
+                <a 
+                  href="/products" 
+                  className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <CubeIcon className="h-4 w-4 mr-2" />
+                  Quản lý sản phẩm
+                </a>
               </div>
             )}
           </div>

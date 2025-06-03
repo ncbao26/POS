@@ -32,12 +32,10 @@ function App() {
   }, []);
 
   const handleLogin = (userData) => {
-    console.log('Login successful, setting user:', userData);
     setUser(userData);
   };
 
   const handleLogout = () => {
-    console.log('Logout triggered');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
