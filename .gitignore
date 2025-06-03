@@ -115,3 +115,6 @@ remove_console_logs.ps1
 !render.yaml
 !build.sh
 !start.sh
+
+# Temporary ignore package-lock.json until build is fixed
+package-lock.json
