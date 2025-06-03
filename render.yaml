@@ -4,8 +4,8 @@ services:
     name: webthanhtoan-frontend
     env: node
     plan: free
-    buildCommand: cd WebThanhToan && npm install && npm run build
-    startCommand: cd WebThanhToan && npm run preview
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
     envVars:
       - key: NODE_ENV
         value: production
@@ -14,15 +14,15 @@ services:
           type: web
           name: webthanhtoan-backend
           property: host
-    staticPublishPath: ./WebThanhToan/dist
+    staticPublishPath: ./dist
 
   # Backend Service (Spring Boot)
   - type: web
     name: webthanhtoan-backend
     env: java
     plan: free
-    buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
-    startCommand: cd WebThanhToan/backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
+    buildCommand: cd backend && ./mvnw clean package -DskipTests
+    startCommand: cd backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
