@@ -38,12 +38,12 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         // Tạo các users từ SQL Server
-        createUserIfNotExists("manager", "manager@webthanhtoan.com", "Quản lý cửa hàng", "newpassword123", User.Role.USER);
-        createUserIfNotExists("cashier1", "cashier1@webthanhtoan.com", "Thu ngân 1", "newpassword123", User.Role.USER);
-        createUserIfNotExists("cashier2", "cashier2@webthanhtoan.com", "Thu ngân 2", "newpassword123", User.Role.USER);
-        createUserIfNotExists("mixxstore", "mixxstore.clothing@gmail.com", "MixxStore", "newpassword123", User.Role.ADMIN);
-        createUserIfNotExists("user1", "user1@example.com", "User One", "newpassword123", User.Role.USER);
-        createUserIfNotExists("user2", "user2@example.com", "User Two", "newpassword123", User.Role.USER);
+        createUserIfNotExists("manager", "manager@webthanhtoan.com", "Quản lý cửa hàng", "admin123", User.Role.USER);
+        createUserIfNotExists("cashier1", "cashier1@webthanhtoan.com", "Thu ngân 1", "admin123", User.Role.USER);
+        createUserIfNotExists("cashier2", "cashier2@webthanhtoan.com", "Thu ngân 2", "admin123", User.Role.USER);
+        createUserIfNotExists("mixxstore", "mixxstore.clothing@gmail.com", "MixxStore", "admin123", User.Role.ADMIN);
+        createUserIfNotExists("user1", "user1@example.com", "User One", "admin123", User.Role.USER);
+        createUserIfNotExists("user2", "user2@example.com", "User Two", "admin123", User.Role.USER);
         
         // Admin user đã được tạo ở trên
 
