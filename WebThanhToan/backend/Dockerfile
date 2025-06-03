@@ -1,5 +1,8 @@
-# Multi-stage build for Spring Boot backend
-FROM openjdk:21-jdk-slim AS build
+# Use OpenJDK 17 as base image
+FROM openjdk:17-jdk-slim
+
+# Install curl for health check
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
@@ -16,43 +19,20 @@ RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline -B
 
 # Copy source code
-COPY src src
+COPY src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Production stage - using eclipse-temurin which has JRE 21
-FROM eclipse-temurin:21-jre-alpine
+# List files in target directory for debugging
+RUN ls -la target/
 
-# Install curl for healthcheck
-RUN apk add --no-cache curl
-
-# Create app user
-RUN addgroup -g 1001 -S spring && \
-    adduser -u 1001 -S spring -G spring
-
-# Set working directory
-WORKDIR /app
-
-# Copy jar file from build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Change ownership to spring user
-RUN chown spring:spring app.jar
-
-# Switch to spring user
-USER spring:spring
-
-# Expose port (Render uses PORT environment variable)
-EXPOSE ${PORT:-8080}
-
-# Environment variables for production
-ENV SPRING_PROFILES_ACTIVE=production
-ENV JAVA_OPTS="-Xms128m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200 -XX:+UseCompressedOops -XX:+OptimizeStringConcat"
+# Expose port
+EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-8080}/actuator/health || exit 1
+  CMD curl -f http://localhost:8080/actuator/health || exit 1
 
-# Start the application with dynamic port
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"] 
+# Run the application with explicit jar name
+CMD ["java", "-jar", "target/backend-1.0.0.jar", "--spring.profiles.active=docker"] 

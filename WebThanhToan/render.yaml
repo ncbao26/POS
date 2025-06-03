@@ -1,36 +1,43 @@
 services:
-  # Frontend Service (React + Vite) - Web Service
-  - type: web
-    name: webthanhtoan-frontend
-    env: node
+  # PostgreSQL Database
+  - type: pgsql
+    name: pos-database
+    databaseName: pos_db
+    user: pos_user
     plan: free
-    buildCommand: cd WebThanhToan && npm install && npm run build
-    startCommand: cd WebThanhToan && npm run preview -- --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: VITE_API_URL
-        value: https://webthanhtoan-backend.onrender.com
 
-  # Backend Service (Spring Boot)
+  # Spring Boot Backend
   - type: web
-    name: webthanhtoan-backend
+    name: pos-backend
     env: java
     plan: free
     buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
-    startCommand: cd WebThanhToan/backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
+    startCommand: cd WebThanhToan/backend && java -jar target/*.jar --spring.profiles.active=production
     envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: production
-      - key: SERVER_PORT
-        value: 10000
-      - key: SPRING_DATASOURCE_URL
-        value: postgresql://webthanhtoan_user:kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u@dpg-d0v7dt63jp1c73ds1q6g-a/webthanhtoan
-      - key: SPRING_DATASOURCE_USERNAME
-        value: webthanhtoan_user
-      - key: SPRING_DATASOURCE_PASSWORD
-        value: kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pos-database
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: pos-database
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: pos-database
+          property: password
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
-        value: https://webthanhtoan-frontend.onrender.com 
+        value: https://pos-frontend.onrender.com,http://localhost:3000
+
+  # React Frontend
+  - type: web
+    name: pos-frontend
+    env: static
+    plan: free
+    buildCommand: cd WebThanhToan && npm ci && npm run build
+    staticPublishPath: WebThanhToan/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://pos-backend.onrender.com 

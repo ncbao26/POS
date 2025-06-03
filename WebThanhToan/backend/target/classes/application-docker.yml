@@ -1,51 +1,48 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:sqlserver://database:1433;databaseName=WebThanhToan;encrypt=false;trustServerCertificate=true}
-    username: ${SPRING_DATASOURCE_USERNAME:sa}
-    password: ${SPRING_DATASOURCE_PASSWORD:12345}
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:postgresql://postgres:5432/pos_db
+    username: pos_user
+    password: pos_password
+    driver-class-name: org.postgresql.Driver
     
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
-        format_sql: false
-        
-  # Redis configuration (optional)
-  data:
-    redis:
-      host: redis
-      port: 6379
-      timeout: 2000ms
-      
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    
   # Actuator for health checks
   management:
     endpoints:
       web:
         exposure:
-          include: health,info,metrics,prometheus
+          include: health,info
     endpoint:
       health:
         show-details: always
         
 jwt:
-  secret: ${JWT_SECRET:mySecretKeyForProductionShouldBeLongerAndMoreSecure}
-  expiration: ${JWT_EXPIRATION:86400000}
+  secret: mySecretKeyForDockerDevelopment123456789012345678901234567890
+  expiration: 86400000
+  
+# CORS Configuration for Docker
+cors:
+  allowed-origins: http://localhost:3000,http://frontend:3000
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
   
 # Logging configuration
 logging:
   level:
     com.webthanhtoan: INFO
-    org.springframework.security: WARN
-    org.hibernate: WARN
+    org.springframework.security: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: /var/log/webthanhtoan/application.log
     
 # Server configuration
 server:

@@ -74,6 +74,8 @@ public class WebSecurityConfig {
                     .requestMatchers("/api/test/**").permitAll()
                     .requestMatchers("/testapi/**").permitAll()
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/actuator/info").permitAll()
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().authenticated()
             );
@@ -92,12 +94,18 @@ public class WebSecurityConfig {
             // Local development
             "http://localhost:5173", 
             "http://localhost:5174", 
+            "http://localhost:3000",
             "http://127.0.0.1:5173", 
             "http://127.0.0.1:5174", 
+            "http://127.0.0.1:3000",
             "file://",
+            // Docker development
+            "http://frontend:3000",
             // Render deployment URLs
             "https://webthanhtoan-frontend.onrender.com",
-            "https://webthanhtoan-backend.onrender.com"
+            "https://webthanhtoan-backend.onrender.com",
+            "https://pos-frontend.onrender.com",
+            "https://pos-backend.onrender.com"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

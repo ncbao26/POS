@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => ({
   define: {
     __API_URL__: JSON.stringify(
       process.env.VITE_API_URL || 
-      (mode === 'production' ? 'https://webthanhtoan-backend.onrender.com/api' : 'http://localhost:8080/api')
+      (mode === 'production' ? 'https://pos-backend.onrender.com/api' : 'http://localhost:8080/api')
     ),
   },
 }))
