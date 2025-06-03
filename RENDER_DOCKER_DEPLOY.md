@@ -24,6 +24,12 @@ Hướng dẫn này sẽ giúp bạn deploy dự án WebThanhToan POS System lê
 └─────────────────────────────────────────────────────────────┘
 ```
 
+**⚠️ Lưu Ý Quan Trọng về Render Architecture:**
+- Frontend và Backend là **separate services** trên Render
+- Frontend gọi Backend qua **external URL** (https://pos-backend.onrender.com)
+- **KHÔNG** sử dụng nginx proxy từ frontend tới backend
+- Mỗi service có domain riêng và giao tiếp qua internet
+
 ## 📋 Yêu Cầu Trước Khi Deploy
 
 ### ✅ **Tài Khoản & Tools**
@@ -50,7 +56,7 @@ POS/
 ├── Dockerfile                  # ✅ Frontend Docker config
 ├── Dockerfile.backend          # ✅ Alternative backend Docker config
 ├── docker-compose.yml          # Local development
-├── nginx.conf                  # ✅ Nginx config
+├── nginx.conf                  # ✅ Nginx config (NO backend proxy)
 ├── package.json
 ├── render-env-example.txt      # ✅ Environment variables template
 └── README.md
@@ -119,10 +125,10 @@ Trong phần **Environment Variables**, thêm tất cả các biến sau:
 
 #### **🗄️ Database Configuration**
 ```bash
-DATABASE_URL=postgresql://pos_user:YOUR_PASSWORD@dpg-xxxxx-a.singapore-postgres.render.com:5432/pos_db
+DATABASE_URL=jdbc:postgresql://dpg-d0vc7eh5pdvs738bf6h0-a.singapore-postgres.render.com:5432/pos_db_nofc
 DB_DRIVER=org.postgresql.Driver
 DB_USERNAME=pos_user
-DB_PASSWORD=YOUR_GENERATED_PASSWORD
+DB_PASSWORD=mSGLyGwgs1usyKfvCmgWLH9WLvQOrVDE
 DB_POOL_SIZE=3
 DB_POOL_MIN=1
 DB_CONNECTION_TIMEOUT=30000
@@ -279,6 +285,33 @@ curl https://pos-backend.onrender.com/api/health
 
 ### 7.1 Common Issues
 
+#### **❌ Frontend: "host not found in upstream 'backend'"**
+```bash
+# Lỗi: nginx: [emerg] host not found in upstream "backend" in /etc/nginx/nginx.conf:77
+# Nguyên nhân: nginx config cố gắng proxy tới backend local
+# Giải pháp: Loại bỏ API proxy trong nginx.conf
+
+# ✅ ĐÚNG: nginx.conf chỉ serve static files
+server {
+    listen 3000;
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    # KHÔNG có location /api/ proxy
+}
+
+# ✅ Frontend gọi backend qua VITE_API_URL
+const API_BASE_URL = import.meta.env.VITE_API_URL; // https://pos-backend.onrender.com
+```
+
+#### **❌ Backend: "Driver claims to not accept jdbcUrl"**
+```bash
+# Lỗi: postgresql://... không được accept
+# Nguyên nhân: Thiếu jdbc: prefix
+# Giải pháp: 
+DATABASE_URL=jdbc:postgresql://host:5432/database
+```
+
 #### **Backend không start được**
 ```bash
 # Check logs trong Render Dashboard
@@ -315,6 +348,24 @@ curl -I https://pos-frontend.onrender.com
 
 # Check database (from backend logs)
 # Look for connection success/failure messages
+```
+
+### 7.3 Render-Specific Issues
+
+#### **Services Sleep After 15 Minutes (Free Tier)**
+```bash
+# Giải pháp:
+1. Upgrade to paid plan ($7/month)
+2. Hoặc implement keep-alive ping
+3. Hoặc chấp nhận cold start delay
+```
+
+#### **Build Timeout**
+```bash
+# Nếu build quá lâu:
+1. Optimize Dockerfile
+2. Reduce dependencies
+3. Use smaller base images
 ```
 
 ## 📊 Bước 8: Monitoring & Maintenance
@@ -390,12 +441,14 @@ Starter Plan: $7/month
 - [ ] Dockerfiles tested locally
 - [ ] Environment variables prepared
 - [ ] Database schema ready
+- [ ] nginx.conf KHÔNG có backend proxy
 
 ### ✅ **Deployment**
 - [ ] PostgreSQL database created
 - [ ] Backend service deployed với Dockerfile.backend
 - [ ] Frontend service deployed
 - [ ] All environment variables configured
+- [ ] DATABASE_URL có jdbc: prefix
 
 ### ✅ **Post-deployment**
 - [ ] All services running
@@ -403,6 +456,7 @@ Starter Plan: $7/month
 - [ ] API endpoints working
 - [ ] Frontend loading correctly
 - [ ] CORS configured properly
+- [ ] No nginx upstream errors
 
 ### ✅ **Testing**
 - [ ] User registration/login
@@ -443,6 +497,9 @@ Sau khi hoàn thành tất cả các bước trên, bạn sẽ có:
 - Backend API: `https://pos-backend.onrender.com`
 - Database: Managed PostgreSQL on Render
 
-**Environment Variables Template:** `render-env-example.txt`
+**Environment Variables Templates:**
+- Backend: `render-backend-env.txt`
+- Frontend: `render-frontend-env.txt`
+- Complete: `render-env-example.txt`
 
 Chúc bạn deploy thành công! 🚀 
