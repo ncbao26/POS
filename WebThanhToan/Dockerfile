@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -25,16 +25,12 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy built app from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Create nginx user and set permissions
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001 && \
-    chown -R nextjs:nodejs /usr/share/nginx/html && \
-    chown -R nextjs:nodejs /var/cache/nginx && \
-    chown -R nextjs:nodejs /var/log/nginx && \
-    chown -R nextjs:nodejs /etc/nginx/conf.d
+# Create directories and set permissions for nginx to run as non-root
+RUN mkdir -p /var/cache/nginx /var/log/nginx /var/run && \
+    chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/run /usr/share/nginx/html /etc/nginx
 
-# Switch to non-root user
-USER nextjs
+# Switch to nginx user
+USER nginx
 
 # Expose port
 EXPOSE 3000
@@ -43,5 +39,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
 
-# Start nginx
+# Start nginx in foreground
 CMD ["nginx", "-g", "daemon off;"] 

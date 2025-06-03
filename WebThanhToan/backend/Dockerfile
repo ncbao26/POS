@@ -21,14 +21,15 @@ COPY src src
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Production stage
-FROM openjdk:21-jre-slim
+# Production stage - using eclipse-temurin which has JRE 21
+FROM eclipse-temurin:21-jre-alpine
 
 # Install curl for healthcheck
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache curl
 
 # Create app user
-RUN addgroup --system spring && adduser --system spring --ingroup spring
+RUN addgroup -g 1001 -S spring && \
+    adduser -u 1001 -S spring -G spring
 
 # Set working directory
 WORKDIR /app

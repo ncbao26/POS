@@ -26,29 +26,30 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Tạo user admin mặc định
+        User admin = null;
         if (!userRepository.existsByUsername("admin")) {
-            User admin = new User();
+            admin = new User();
             admin.setUsername("admin");
             admin.setEmail("admin@webthanhtoan.com");
             admin.setFullName("Administrator");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRole(User.Role.ADMIN);
-            userRepository.save(admin);
+            admin = userRepository.save(admin);
             System.out.println("Created default admin user: admin/admin123");
+        } else {
+            admin = userRepository.findByUsername("admin").orElse(null);
         }
 
         // Tạo các users từ SQL Server
         createUserIfNotExists("manager", "manager@webthanhtoan.com", "Quản lý cửa hàng", "admin123", User.Role.USER);
         createUserIfNotExists("cashier1", "cashier1@webthanhtoan.com", "Thu ngân 1", "admin123", User.Role.USER);
         createUserIfNotExists("cashier2", "cashier2@webthanhtoan.com", "Thu ngân 2", "admin123", User.Role.USER);
-        createUserIfNotExists("mixxstore", "mixxstore.clothing@gmail.com", "MixxStore", "Mixxstore@7979", User.Role.ADMIN);
+        createUserIfNotExists("mixxstore", "mixxstore.clothing@gmail.com", "MixxStore", "admin123", User.Role.ADMIN);
         createUserIfNotExists("user1", "user1@example.com", "User One", "admin123", User.Role.USER);
         createUserIfNotExists("user2", "user2@example.com", "User Two", "admin123", User.Role.USER);
-        
-        // Admin user đã được tạo ở trên
 
-        // Tạo một số sản phẩm mẫu
-        if (productRepository.count() == 0) {
+        // Tạo một số sản phẩm mẫu với admin user
+        if (productRepository.count() == 0 && admin != null) {
             Product[] sampleProducts = {
                 new Product("Laptop Dell XPS 13", "Laptop cao cấp với màn hình 13 inch", new BigDecimal("20000000"), new BigDecimal("25000000"), 10),
                 new Product("iPhone 15 Pro", "Điện thoại thông minh mới nhất của Apple", new BigDecimal("25000000"), new BigDecimal("30000000"), 5),
@@ -63,9 +64,10 @@ public class DataInitializer implements CommandLineRunner {
             };
 
             for (Product product : sampleProducts) {
+                product.setUser(admin); // Set admin user for all products
                 productRepository.save(product);
             }
-            System.out.println("Created " + sampleProducts.length + " sample products");
+            System.out.println("Created " + sampleProducts.length + " sample products for admin user");
         }
     }
 
