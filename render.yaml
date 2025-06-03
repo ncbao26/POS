@@ -1,9 +1,11 @@
 services:
-  # Frontend Service (React + Vite) - Static Site
-  - type: static
+  # Frontend Service (React + Vite) - Web Service
+  - type: web
     name: webthanhtoan-frontend
+    env: node
+    plan: free
     buildCommand: cd WebThanhToan && npm install && npm run build
-    staticPublishPath: ./WebThanhToan/dist
+    startCommand: cd WebThanhToan && npm run preview -- --host 0.0.0.0 --port $PORT
     envVars:
       - key: NODE_ENV
         value: production
