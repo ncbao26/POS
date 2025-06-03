@@ -15,7 +15,7 @@ services:
   # Backend Service (Spring Boot)
   - type: web
     name: webthanhtoan-backend
-    runtime: java
+    env: java
     plan: free
     buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
     startCommand: cd WebThanhToan/backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
