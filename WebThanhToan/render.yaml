@@ -12,7 +12,7 @@ services:
     env: java
     plan: free
     buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
-    startCommand: cd WebThanhToan/backend && java -jar target/*.jar --spring.profiles.active=production
+    startCommand: cd WebThanhToan/backend && java -jar target/backend-1.0.0.jar --spring.profiles.active=production
     envVars:
       - key: DATABASE_URL
         fromDatabase:
