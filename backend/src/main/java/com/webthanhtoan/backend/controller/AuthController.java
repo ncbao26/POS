@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*", maxAge = 3600, allowCredentials = "false")
+@CrossOrigin(origins = "*", maxAge = 3600, allowCredentials = "false", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -37,6 +37,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        System.out.println("=== LOGIN REQUEST RECEIVED ===");
+        System.out.println("Username: " + loginRequest.getUsername());
+        System.out.println("Password length: " + (loginRequest.getPassword() != null ? loginRequest.getPassword().length() : "null"));
+        
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -45,6 +49,8 @@ public class AuthController {
             String jwt = jwtUtils.generateJwtToken(authentication);
 
             User user = (User) authentication.getPrincipal();
+            
+            System.out.println("Login successful for user: " + user.getUsername());
 
             return ResponseEntity.ok(new JwtResponse(jwt,
                     user.getId(),
@@ -53,10 +59,17 @@ public class AuthController {
                     user.getFullName(),
                     user.getRole()));
         } catch (Exception e) {
+            System.out.println("Login failed: " + e.getMessage());
+            e.printStackTrace();
             Map<String, String> error = new HashMap<>();
             error.put("message", "Tên đăng nhập hoặc mật khẩu không đúng");
             return ResponseEntity.badRequest().body(error);
         }
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions() {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")

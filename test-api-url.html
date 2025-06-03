@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API URL Resolution</title>
+</head>
+<body>
+    <h1>API URL Test</h1>
+    <div id="results"></div>
+
+    <script type="module">
+        // Simulate Vite environment
+        const mockEnv = {
+            MODE: 'production',
+            PROD: true,
+            VITE_API_URL: 'https://mixxstorepos-backend.onrender.com',
+            VITE_API_BASE_URL: 'https://mixxstorepos-backend.onrender.com/api'
+        };
+
+        // Mock import.meta.env
+        const importMeta = { env: mockEnv };
+
+        // API Configuration logic from frontend
+        const getApiBaseUrl = () => {
+            if (importMeta.env.VITE_API_URL) {
+                return `${importMeta.env.VITE_API_URL}/api`;
+            }
+            
+            if (importMeta.env.VITE_API_BASE_URL) {
+                return importMeta.env.VITE_API_BASE_URL;
+            }
+            
+            if (importMeta.env.PROD) {
+                return 'https://mixxstorepos-backend.onrender.com/api';
+            }
+            
+            return 'http://localhost:8080/api';
+        };
+
+        const API_BASE_URL = getApiBaseUrl();
+
+        // Display results
+        const results = document.getElementById('results');
+        results.innerHTML = `
+            <h2>Environment Variables:</h2>
+            <p><strong>MODE:</strong> ${importMeta.env.MODE}</p>
+            <p><strong>PROD:</strong> ${importMeta.env.PROD}</p>
+            <p><strong>VITE_API_URL:</strong> ${importMeta.env.VITE_API_URL}</p>
+            <p><strong>VITE_API_BASE_URL:</strong> ${importMeta.env.VITE_API_BASE_URL}</p>
+            
+            <h2>Resolved API URL:</h2>
+            <p><strong>Final API Base URL:</strong> ${API_BASE_URL}</p>
+            
+            <h2>Test Login URL:</h2>
+            <p><strong>Login Endpoint:</strong> ${API_BASE_URL}/auth/login</p>
+            
+            <button onclick="testLogin()">Test Login API</button>
+            <div id="loginResult"></div>
+        `;
+
+        // Test login function
+        window.testLogin = async () => {
+            const loginResult = document.getElementById('loginResult');
+            loginResult.innerHTML = '<p>Testing login...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': 'https://mixxstorepos-frontend.onrender.com'
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'admin123'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    loginResult.innerHTML = `
+                        <h3 style="color: green;">✅ Login Success!</h3>
+                        <p><strong>Username:</strong> ${data.username}</p>
+                        <p><strong>Role:</strong> ${data.role}</p>
+                        <p><strong>Token Length:</strong> ${data.token ? data.token.length : 'N/A'}</p>
+                    `;
+                } else {
+                    loginResult.innerHTML = `
+                        <h3 style="color: red;">❌ Login Failed</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Message:</strong> ${data.message || 'Unknown error'}</p>
+                    `;
+                }
+            } catch (error) {
+                loginResult.innerHTML = `
+                    <h3 style="color: red;">❌ Network Error</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        };
+    </script>
+</body>
+</html> 

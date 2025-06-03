@@ -1,13 +1,18 @@
 // API Configuration với support cho environment variables
 const getApiBaseUrl = () => {
-  // Trong Docker, sử dụng environment variable hoặc relative path
+  // Ưu tiên VITE_API_URL từ environment
+  if (import.meta.env.VITE_API_URL) {
+    return `${import.meta.env.VITE_API_URL}/api`;
+  }
+  
+  // Fallback cho VITE_API_BASE_URL
   if (import.meta.env.VITE_API_BASE_URL) {
     return import.meta.env.VITE_API_BASE_URL;
   }
   
-  // Trong production với Docker, API sẽ được proxy qua nginx
+  // Production với full URL (không dùng relative path để tránh CORS)
   if (import.meta.env.PROD) {
-    return '/api';
+    return 'https://mixxstorepos-backend.onrender.com/api';
   }
   
   // Development fallback
@@ -16,7 +21,12 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-console.log('API Base URL:', API_BASE_URL);
+console.log('=== API Configuration ===');
+console.log('Environment:', import.meta.env.MODE);
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+console.log('VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
+console.log('Final API Base URL:', API_BASE_URL);
+console.log('========================');
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {
