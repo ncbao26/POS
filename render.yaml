@@ -15,7 +15,6 @@ services:
           name: webthanhtoan-backend
           property: host
     staticPublishPath: ./WebThanhToan/dist
-
   # Backend Service (Spring Boot)
   - type: web
     name: webthanhtoan-backend
@@ -47,10 +46,10 @@ services:
           type: web
           name: webthanhtoan-frontend
           property: host
-
-  # Database Service (PostgreSQL - since Render doesn't support SQL Server)
-  - type: pgsql
+  # Database Service (PostgreSQL)
+  - type: database
     name: webthanhtoan-db
+    databaseType: postgresql
     plan: free
     databaseName: webthanhtoan
-    user: webthanhtoan_user 
+    user: webthanhtoan_user
