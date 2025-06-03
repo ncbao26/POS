@@ -101,7 +101,10 @@ public class WebSecurityConfig {
             "file://",
             // Docker development
             "http://frontend:3000",
-            // Render deployment URLs
+            // Render deployment URLs - MixxStore
+            "https://mixxstorepos-frontend.onrender.com",
+            "https://mixxstorepos-backend.onrender.com",
+            // Render deployment URLs - Old
             "https://webthanhtoan-frontend.onrender.com",
             "https://webthanhtoan-backend.onrender.com",
             "https://pos-frontend.onrender.com",

@@ -101,4 +101,80 @@ public class AuthController {
 
         return ResponseEntity.ok(userInfo);
     }
+
+    @GetMapping("/test/users")
+    public ResponseEntity<?> testUsers() {
+        Map<String, Object> response = new HashMap<>();
+        
+        // Đếm số lượng users
+        long userCount = userRepository.count();
+        response.put("totalUsers", userCount);
+        
+        // Lấy danh sách username
+        var users = userRepository.findAll();
+        var usernames = users.stream()
+            .map(user -> Map.of(
+                "username", user.getUsername(),
+                "email", user.getEmail(),
+                "fullName", user.getFullName(),
+                "role", user.getRole(),
+                "isActive", user.getIsActive()
+            ))
+            .toList();
+        response.put("users", usernames);
+        
+        // Test password encoding
+        String testPassword = "admin123";
+        String encodedPassword = encoder.encode(testPassword);
+        boolean matches = encoder.matches(testPassword, encodedPassword);
+        
+        response.put("passwordTest", Map.of(
+            "originalPassword", testPassword,
+            "encodedPassword", encodedPassword,
+            "matches", matches
+        ));
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/test/login")
+    public ResponseEntity<?> testLogin(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Tìm user
+            var userOpt = userRepository.findByUsername(username);
+            if (userOpt.isEmpty()) {
+                response.put("error", "User not found");
+                response.put("username", username);
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            User user = userOpt.get();
+            response.put("userFound", true);
+            response.put("username", user.getUsername());
+            response.put("email", user.getEmail());
+            response.put("isActive", user.getIsActive());
+            
+            // Test password
+            boolean passwordMatches = encoder.matches(password, user.getPassword());
+            response.put("passwordMatches", passwordMatches);
+            response.put("storedPasswordLength", user.getPassword().length());
+            response.put("inputPassword", password);
+            
+            if (passwordMatches) {
+                response.put("message", "Login would succeed");
+            } else {
+                response.put("message", "Password does not match");
+            }
+            
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
 }

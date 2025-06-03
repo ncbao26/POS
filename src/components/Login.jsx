@@ -58,7 +58,7 @@ const Login = ({ onLogin }) => {
               <UserIcon className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Đăng nhập</h2>
-            <p className="text-gray-600">Hệ thống quản lý thanh toán WebThanhToan</p>
+            <p className="text-gray-600">Hệ thống quản lý thanh toán MixxStore</p>
           </div>
 
           {/* Form */}
