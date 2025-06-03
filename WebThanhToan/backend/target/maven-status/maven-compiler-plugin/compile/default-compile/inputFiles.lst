@@ -10,6 +10,7 @@ C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webth
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\config\DataInitializer.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\security\AuthEntryPointJwt.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\controller\CustomerController.java
+C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\controller\DataMigrationController.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\dto\CreateInvoiceRequest.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\entity\InvoiceItem.java
 C:\Users\Admin\Documents\GitHub\POS\WebThanhToan\backend\src\main\java\com\webthanhtoan\backend\repository\UserRepository.java

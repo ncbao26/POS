@@ -37,6 +37,16 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Created default admin user: admin/admin123");
         }
 
+        // Tạo các users từ SQL Server
+        createUserIfNotExists("manager", "manager@webthanhtoan.com", "Quản lý cửa hàng", "newpassword123", User.Role.USER);
+        createUserIfNotExists("cashier1", "cashier1@webthanhtoan.com", "Thu ngân 1", "newpassword123", User.Role.USER);
+        createUserIfNotExists("cashier2", "cashier2@webthanhtoan.com", "Thu ngân 2", "newpassword123", User.Role.USER);
+        createUserIfNotExists("mixxstore", "mixxstore.clothing@gmail.com", "MixxStore", "newpassword123", User.Role.ADMIN);
+        createUserIfNotExists("user1", "user1@example.com", "User One", "newpassword123", User.Role.USER);
+        createUserIfNotExists("user2", "user2@example.com", "User Two", "newpassword123", User.Role.USER);
+        
+        // Admin user đã được tạo ở trên
+
         // Tạo một số sản phẩm mẫu
         if (productRepository.count() == 0) {
             Product[] sampleProducts = {
@@ -56,6 +66,19 @@ public class DataInitializer implements CommandLineRunner {
                 productRepository.save(product);
             }
             System.out.println("Created " + sampleProducts.length + " sample products");
+        }
+    }
+
+    private void createUserIfNotExists(String username, String email, String fullName, String password, User.Role role) {
+        if (!userRepository.existsByUsername(username)) {
+            User user = new User();
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setFullName(fullName);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setRole(role);
+            userRepository.save(user);
+            System.out.println("Created user: " + username + " (" + fullName + ")");
         }
     }
 } 
