@@ -1,24 +1,19 @@
 services:
-  # Dịch vụ Frontend (React + Vite)
-  - type: web
+  # Frontend Service (React + Vite) - Static Site
+  - type: static
     name: webthanhtoan-frontend
-    env: node
-    plan: free
     buildCommand: cd WebThanhToan && npm install && npm run build
-    startCommand: cd WebThanhToan && npm run preview
+    staticPublishPath: ./WebThanhToan/dist
     envVars:
       - key: NODE_ENV
         value: production
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: webthanhtoan-backend
-          property: host
-    staticPublishPath: ./WebThanhToan/dist
-  # Dịch vụ Backend (Spring Boot)
+        value: https://webthanhtoan-backend.onrender.com
+
+  # Backend Service (Spring Boot)
   - type: web
     name: webthanhtoan-backend
-    env: java
+    runtime: java
     plan: free
     buildCommand: cd WebThanhToan/backend && ./mvnw clean package -DskipTests
     startCommand: cd WebThanhToan/backend && java -Xms128m -Xmx512m -XX:+UseG1GC -jar target/*.jar
@@ -36,7 +31,4 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: webthanhtoan-frontend
-          property: host
+        value: https://webthanhtoan-frontend.onrender.com 
