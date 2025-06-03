@@ -1,5 +1,5 @@
 services:
-  # Frontend Service (React + Vite)
+  # Dịch vụ Frontend (React + Vite)
   - type: web
     name: webthanhtoan-frontend
     env: node
@@ -15,7 +15,7 @@ services:
           name: webthanhtoan-backend
           property: host
     staticPublishPath: ./WebThanhToan/dist
-  # Backend Service (Spring Boot)
+  # Dịch vụ Backend (Spring Boot)
   - type: web
     name: webthanhtoan-backend
     env: java
@@ -28,17 +28,11 @@ services:
       - key: SERVER_PORT
         value: 10000
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: webthanhtoan-db
-          property: connectionString
+        value: REPLACE_WITH_RENDER_POSTGRESQL_CONNECTION_STRING
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: webthanhtoan-db
-          property: user
+        value: REPLACE_WITH_RENDER_POSTGRESQL_USERNAME
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: webthanhtoan-db
-          property: password
+        value: REPLACE_WITH_RENDER_POSTGRESQL_PASSWORD
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
@@ -46,10 +40,3 @@ services:
           type: web
           name: webthanhtoan-frontend
           property: host
-  # Database Service (PostgreSQL)
-  - type: database
-    name: webthanhtoan-db
-    databaseType: postgresql
-    plan: free
-    databaseName: webthanhtoan
-    user: webthanhtoan_user
