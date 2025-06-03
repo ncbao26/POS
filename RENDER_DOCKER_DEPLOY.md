@@ -48,9 +48,11 @@ POS/
 │   └── pom.xml
 ├── src/                        # Frontend React code
 ├── Dockerfile                  # ✅ Frontend Docker config
+├── Dockerfile.backend          # ✅ Alternative backend Docker config
 ├── docker-compose.yml          # Local development
 ├── nginx.conf                  # ✅ Nginx config
 ├── package.json
+├── render-env-example.txt      # ✅ Environment variables template
 └── README.md
 ```
 
@@ -104,50 +106,93 @@ Name: pos-backend
 Environment: Docker
 Region: Singapore
 Branch: main
-Root Directory: backend
-Dockerfile Path: backend/Dockerfile
+Root Directory: . (root)
+Dockerfile Path: Dockerfile.backend
 ```
+
+**Lưu ý quan trọng:**
+- Sử dụng `Dockerfile.backend` ở root directory
+- Root Directory để là `.` (root)
 
 ### 3.2 Cấu hình Environment Variables
-Trong phần **Environment Variables**, thêm:
+Trong phần **Environment Variables**, thêm tất cả các biến sau:
 
+#### **🗄️ Database Configuration**
 ```bash
-# Database Configuration
-DATABASE_URL=postgresql://pos_user:PASSWORD@HOST:5432/pos_db
-DB_HOST=dpg-xxxxx-a.singapore-postgres.render.com
-DB_PORT=5432
-DB_NAME=pos_db
+DATABASE_URL=postgresql://pos_user:YOUR_PASSWORD@dpg-xxxxx-a.singapore-postgres.render.com:5432/pos_db
+DB_DRIVER=org.postgresql.Driver
 DB_USERNAME=pos_user
-DB_PASSWORD=YOUR_DB_PASSWORD
+DB_PASSWORD=YOUR_GENERATED_PASSWORD
+DB_POOL_SIZE=3
+DB_POOL_MIN=1
+DB_CONNECTION_TIMEOUT=30000
+DB_IDLE_TIMEOUT=600000
+DB_MAX_LIFETIME=1800000
+```
 
-# Spring Profiles
+#### **🚀 Spring Boot Configuration**
+```bash
 SPRING_PROFILES_ACTIVE=production
+PORT=8080
+```
 
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-secure
+#### **🔧 JPA/Hibernate Configuration**
+```bash
+JPA_DDL_AUTO=create-drop
+JPA_SHOW_SQL=false
+JPA_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+JPA_FORMAT_SQL=false
+```
+
+#### **🔄 Flyway Configuration**
+```bash
+FLYWAY_ENABLED=false
+FLYWAY_BASELINE_ON_MIGRATE=true
+FLYWAY_VALIDATE_ON_MIGRATE=false
+```
+
+#### **🔐 Security Configuration**
+```bash
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=secure-admin-password-change-this
+JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-secure-at-least-32-characters-long-for-production
 JWT_EXPIRATION=86400000
+```
 
-# CORS Configuration
+#### **🌐 CORS Configuration**
+```bash
 CORS_ALLOWED_ORIGINS=https://pos-frontend.onrender.com,http://localhost:3000
-
-# Server Configuration
-SERVER_PORT=8080
-
-# JVM Optimization for Render
-JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+CORS_ALLOWED_METHODS=GET,POST,PUT,DELETE,OPTIONS
+CORS_ALLOWED_HEADERS=*
+CORS_ALLOW_CREDENTIALS=true
 ```
 
-### 3.3 Cấu hình Build & Deploy
-```yaml
-Build Command: (leave empty - Docker handles this)
-Start Command: (leave empty - Docker handles this)
+#### **📝 Logging Configuration**
+```bash
+LOG_LEVEL_APP=INFO
+LOG_LEVEL_SECURITY=WARN
+LOG_LEVEL_HIBERNATE=WARN
+LOG_LEVEL_WEB=WARN
+LOG_LEVEL_BOOT=INFO
 ```
 
-### 3.4 Deploy Backend
+#### **🔍 Actuator Configuration**
+```bash
+ACTUATOR_ENDPOINTS=health,info
+ACTUATOR_HEALTH_DETAILS=when-authorized
+H2_CONSOLE_ENABLED=false
+```
+
+#### **⚡ JVM Optimization**
+```bash
+JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=200
+```
+
+### 3.3 Deploy Backend
 1. Click **"Create Web Service"**
 2. Render sẽ tự động:
    - Clone repository
-   - Build Docker image từ `backend/Dockerfile`
+   - Build Docker image từ `Dockerfile.backend`
    - Deploy container
    - Assign URL: `https://pos-backend.onrender.com`
 
@@ -254,7 +299,7 @@ curl https://pos-backend.onrender.com/api/health
 #### **Database connection issues**
 ```bash
 # Verify:
-- Database URL format
+- DATABASE_URL format đúng
 - Username/password correct
 - Database is running
 - Network connectivity
@@ -348,9 +393,9 @@ Starter Plan: $7/month
 
 ### ✅ **Deployment**
 - [ ] PostgreSQL database created
-- [ ] Backend service deployed
+- [ ] Backend service deployed với Dockerfile.backend
 - [ ] Frontend service deployed
-- [ ] Environment variables configured
+- [ ] All environment variables configured
 
 ### ✅ **Post-deployment**
 - [ ] All services running
@@ -397,5 +442,7 @@ Sau khi hoàn thành tất cả các bước trên, bạn sẽ có:
 - Frontend: `https://pos-frontend.onrender.com`
 - Backend API: `https://pos-backend.onrender.com`
 - Database: Managed PostgreSQL on Render
+
+**Environment Variables Template:** `render-env-example.txt`
 
 Chúc bạn deploy thành công! 🚀 

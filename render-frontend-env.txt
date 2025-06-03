@@ -1,0 +1,31 @@
+# =============================================================================
+# FRONTEND ENVIRONMENT VARIABLES FOR RENDER DEPLOYMENT
+# Copy ONLY these variables to Frontend Web Service
+# =============================================================================
+
+# =============================================================================
+# API CONFIGURATION
+# =============================================================================
+# Backend API URL - Update with your actual backend URL
+VITE_API_URL=https://pos-backend.onrender.com
+
+# =============================================================================
+# APPLICATION CONFIGURATION
+# =============================================================================
+VITE_APP_NAME=WebThanhToan POS
+VITE_VERSION=1.0.0
+VITE_APP_DESCRIPTION=Modern Point of Sale System
+
+# =============================================================================
+# BUILD CONFIGURATION
+# =============================================================================
+NODE_ENV=production
+
+# =============================================================================
+# OPTIONAL: FEATURE FLAGS (if needed)
+# =============================================================================
+# VITE_ENABLE_ANALYTICS=false
+# VITE_ENABLE_DEBUG=false
+# VITE_THEME=light
+# VITE_LANGUAGE=vi
+# VITE_CURRENCY=VND 

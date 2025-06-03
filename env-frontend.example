@@ -1,0 +1,65 @@
+# =============================================================================
+# FRONTEND DEVELOPMENT ENVIRONMENT VARIABLES
+# Copy this file to .env and update values for local development
+# =============================================================================
+
+# =============================================================================
+# API CONFIGURATION
+# =============================================================================
+# Backend API URL (Local development)
+VITE_API_URL=http://localhost:8080
+
+# Alternative backend URLs for different environments
+# VITE_API_URL=https://pos-backend.onrender.com  # Production
+# VITE_API_URL=http://localhost:8080             # Local development
+
+# =============================================================================
+# APPLICATION CONFIGURATION
+# =============================================================================
+VITE_APP_NAME=WebThanhToan POS
+VITE_APP_VERSION=1.0.0
+VITE_APP_DESCRIPTION=Modern Point of Sale System
+
+# =============================================================================
+# DEVELOPMENT CONFIGURATION
+# =============================================================================
+NODE_ENV=development
+VITE_DEV_MODE=true
+
+# =============================================================================
+# FEATURE FLAGS
+# =============================================================================
+VITE_ENABLE_ANALYTICS=false
+VITE_ENABLE_DEBUG=true
+VITE_ENABLE_HOT_RELOAD=true
+
+# =============================================================================
+# UI CONFIGURATION
+# =============================================================================
+VITE_THEME=light
+VITE_LANGUAGE=vi
+VITE_CURRENCY=VND
+
+# =============================================================================
+# PERFORMANCE CONFIGURATION
+# =============================================================================
+VITE_ENABLE_PWA=false
+VITE_ENABLE_SERVICE_WORKER=false
+
+# =============================================================================
+# SECURITY CONFIGURATION
+# =============================================================================
+# JWT Token storage key
+VITE_TOKEN_STORAGE_KEY=pos_auth_token
+
+# Session timeout (in minutes)
+VITE_SESSION_TIMEOUT=60
+
+# =============================================================================
+# EXTERNAL SERVICES
+# =============================================================================
+# Google Analytics (if needed)
+# VITE_GA_TRACKING_ID=GA-XXXXXXXXX
+
+# Sentry Error Tracking (if needed)
+# VITE_SENTRY_DSN=https://xxxxx@sentry.io/xxxxx 

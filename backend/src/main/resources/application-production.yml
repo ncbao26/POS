@@ -17,30 +17,31 @@ spring:
     password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      connection-timeout: 20000
-      idle-timeout: 300000
-      max-lifetime: 1200000
+      maximum-pool-size: 3
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
   
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-        jdbc:
-          batch_size: 20
-        order_inserts: true
-        order_updates: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
   
   security:
     user:
       name: admin
       password: ${ADMIN_PASSWORD:admin123}
+
+# Disable Flyway for now
+flyway:
+  enabled: false
 
 # JWT Configuration
 jwt:
@@ -59,8 +60,8 @@ logging:
   level:
     com.webthanhtoan: INFO
     org.springframework.security: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.hibernate: WARN
+    org.springframework.web: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 
@@ -69,13 +70,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health,info
   endpoint:
     health:
-      show-details: when-authorized
-
-# Flyway Configuration
-flyway:
-  enabled: true
-  baseline-on-migrate: true
-  validate-on-migrate: false 
+      show-details: when-authorized 
