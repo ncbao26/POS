@@ -14,13 +14,13 @@
   ],
   "author": "WebThanhToan Team",
   "license": "MIT",
-  "homepage": "https://github.com/your-username/WebThanhToan",
+  "homepage": "https://github.com/ncbao26/POS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/WebThanhToan.git"
+    "url": "https://github.com/ncbao26/POS.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/WebThanhToan/issues"
+    "url": "https://github.com/ncbao26/POS/issues"
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",

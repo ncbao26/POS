@@ -88,7 +88,17 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5174", "file://"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            // Local development
+            "http://localhost:5173", 
+            "http://localhost:5174", 
+            "http://127.0.0.1:5173", 
+            "http://127.0.0.1:5174", 
+            "file://",
+            // Render deployment URLs
+            "https://webthanhtoan-frontend.onrender.com",
+            "https://webthanhtoan-backend.onrender.com"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

@@ -2,6 +2,41 @@
 
 Hệ thống Point of Sale (POS) hiện đại được xây dựng với React frontend và Spring Boot backend.
 
+## 🚀 Deployment Options
+
+### 🌐 Deploy to Render (Recommended for Production)
+
+1. **Push to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Add Render deployment configuration"
+   git push origin main
+   ```
+
+2. **Deploy on Render**:
+   - Truy cập [Render Dashboard](https://dashboard.render.com)
+   - Chọn "New" → "Blueprint"
+   - Connect GitHub repository: `https://github.com/ncbao26/POS`
+   - Render sẽ tự động deploy theo file `render.yaml`
+
+3. **Services được tạo**:
+   - **Frontend**: `webthanhtoan-frontend.onrender.com`
+   - **Backend API**: `webthanhtoan-backend.onrender.com`
+   - **Database**: PostgreSQL (managed by Render)
+
+### 🐳 Local Development với Docker
+
+#### Windows:
+```powershell
+.\docker-deploy.ps1
+```
+
+#### Linux/Mac:
+```bash
+chmod +x docker-deploy.sh
+./docker-deploy.sh
+```
+
 ## 📋 System Requirements
 
 ### ✅ **Minimum Requirements (Laptop yếu - 4GB RAM)**

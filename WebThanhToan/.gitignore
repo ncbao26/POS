@@ -78,12 +78,12 @@ Thumbs.db
 application-local.yml
 application-local.properties
 
-# Deployment
-.vercel
-.netlify
-.firebase
-.aws
-.gcp
+# Deployment - Keep deployment configs
+# .vercel
+# .netlify
+# .firebase
+# .aws
+# .gcp
 
 # Cache
 .cache
@@ -110,3 +110,8 @@ remove_console_logs.ps1
 # Development helpers
 *.ps1.bak
 *.sql.bak
+
+# Keep deployment files
+!render.yaml
+!build.sh
+!start.sh
