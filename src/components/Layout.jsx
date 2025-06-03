@@ -34,7 +34,7 @@ const Layout = ({ children, user, onLogout }) => {
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white/90 backdrop-blur-md border-r border-white/20">
           <div className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-white/20">
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              WebThanhToan
+              POS - MixxStore
             </h1>
             <button
               type="button"
