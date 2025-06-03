@@ -28,11 +28,11 @@ services:
       - key: SERVER_PORT
         value: 10000
       - key: SPRING_DATASOURCE_URL
-        value: REPLACE_WITH_RENDER_POSTGRESQL_CONNECTION_STRING
+        value: postgresql://webthanhtoan_user:kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u@dpg-d0v7dt63jp1c73ds1q6g-a/webthanhtoan
       - key: SPRING_DATASOURCE_USERNAME
-        value: REPLACE_WITH_RENDER_POSTGRESQL_USERNAME
+        value: webthanhtoan_user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: REPLACE_WITH_RENDER_POSTGRESQL_PASSWORD
+        value: kY7iBclL2xZ8tXvMgwqdCnEusBtl3r8u
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
