@@ -49,7 +49,7 @@ services:
           property: host
 
   # Database Service (PostgreSQL - since Render doesn't support SQL Server)
-  - type: pgsql
+  - type: postgres
     name: webthanhtoan-db
     plan: free
     databaseName: webthanhtoan
