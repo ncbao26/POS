@@ -2,45 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
+/* Custom styles - Pink Pastel Theme */
 .btn-primary {
-  @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105;
+  @apply bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105;
 }
 
 .btn-secondary {
-  @apply bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 px-6 rounded-xl transition-all duration-200;
+  @apply bg-pink-50 hover:bg-pink-100 text-pink-700 font-medium py-3 px-6 rounded-xl transition-all duration-200;
 }
 
 .btn-danger {
-  @apply bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-red-500/25 transition-all duration-200 transform hover:scale-105;
+  @apply bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-red-500/25 transition-all duration-200 transform hover:scale-105;
 }
 
 .input-field {
-  @apply w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all;
+  @apply w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all;
 }
 
 .card {
-  @apply bg-white rounded-2xl shadow-lg p-6 border border-slate-200;
+  @apply bg-white rounded-2xl shadow-lg p-6 border border-pink-100;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Pink Theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #fdf2f8;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #f9a8d4;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #f472b6;
 }
 
 /* Smooth transitions */
@@ -50,14 +50,14 @@
   transition-duration: 150ms;
 }
 
-/* Glass effect */
+/* Glass effect - Pink tinted */
 .glass {
-  @apply bg-white/80 backdrop-blur-xl border border-white/20;
+  @apply bg-pink-50/80 backdrop-blur-xl border border-pink-100/50;
 }
 
-/* Gradient text */
+/* Gradient text - Pink theme */
 .gradient-text {
-  @apply bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent;
 }
 
 /* Animation utilities */
@@ -76,9 +76,9 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Focus styles */
+/* Focus styles - Pink theme */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  @apply focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2;
 }
 
 /* Hover effects */

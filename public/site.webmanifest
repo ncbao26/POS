@@ -1,6 +1,6 @@
 {
-  "name": "WebThanhToan - Hệ thống POS",
-  "short_name": "WebThanhToan",
+  "name": "Mixx Store - Hệ thống POS",
+  "short_name": "Mixx Store",
   "description": "Hệ thống quản lý bán hàng (POS) hiện đại",
   "icons": [
     {
@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#2563eb",
-  "background_color": "#ffffff",
+  "theme_color": "#ec4899",
+  "background_color": "#fdf2f8",
   "display": "standalone",
   "start_url": "/",
   "scope": "/",

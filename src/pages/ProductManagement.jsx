@@ -265,7 +265,7 @@ const ProductManagement = () => {
               disabled={page === '...'}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                 page === currentPage
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? 'bg-pink-600 text-white shadow-lg'
                   : page === '...'
                   ? 'text-slate-400 cursor-default'
                   : 'text-slate-600 hover:bg-slate-50 border border-slate-300'
@@ -290,7 +290,7 @@ const ProductManagement = () => {
   if (state.loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
       </div>
     );
   }
@@ -300,14 +300,14 @@ const ProductManagement = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
             Quản lý sản phẩm
           </h1>
           <p className="text-slate-600 mt-1">Quản lý danh sách sản phẩm và tồn kho</p>
         </div>
         <button
           onClick={handleShowAddForm}
-          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
+          className="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
         >
           <PlusIcon className="h-5 w-5" />
           <span>Thêm sản phẩm</span>
@@ -334,7 +334,7 @@ const ProductManagement = () => {
       )}
 
       {/* Search */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
+      <div className="bg-white rounded-2xl p-6 border border-pink-100 shadow-lg">
         <div className="relative">
           <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
           <input
@@ -342,17 +342,17 @@ const ProductManagement = () => {
             placeholder="Tìm kiếm sản phẩm..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full pl-12 pr-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all"
           />
         </div>
       </div>
 
       {/* Add/Edit Form */}
       {showAddForm && (
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
+        <div className="bg-white rounded-2xl p-6 border border-pink-100 shadow-lg">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-slate-900 flex items-center">
-              <CubeIcon className="h-6 w-6 mr-2 text-blue-600" />
+              <CubeIcon className="h-6 w-6 mr-2 text-pink-600" />
               {editingProduct ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới'}
             </h3>
             <button
@@ -375,7 +375,7 @@ const ProductManagement = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Nhập tên sản phẩm"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                   autoComplete="off"
                 />
               </div>
@@ -390,7 +390,7 @@ const ProductManagement = () => {
                   onChange={handleInputChange}
                   placeholder="Nhập mô tả chi tiết về sản phẩm..."
                   rows={4}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all resize-none"
                   autoComplete="off"
                 />
               </div>
@@ -408,7 +408,7 @@ const ProductManagement = () => {
                     value={formData.costPrice}
                     onChange={handleInputChange}
                     placeholder="0"
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                     min="0"
                     step="1000"
                     autoComplete="off"
@@ -425,7 +425,7 @@ const ProductManagement = () => {
                     value={formData.price}
                     onChange={handleInputChange}
                     placeholder="0"
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                     min="0"
                     step="1000"
                     autoComplete="off"
@@ -443,7 +443,7 @@ const ProductManagement = () => {
                   value={formData.stock}
                   onChange={handleInputChange}
                   placeholder="0"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
                   min="0"
                   autoComplete="off"
                 />
@@ -462,7 +462,7 @@ const ProductManagement = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-600">Tỷ suất lợi nhuận:</span>
-                      <span className="font-semibold text-blue-600">
+                      <span className="font-semibold text-pink-600">
                         {calculateProfitMargin(Number(formData.costPrice), Number(formData.price))}%
                       </span>
                     </div>
@@ -476,7 +476,7 @@ const ProductManagement = () => {
             <button
               onClick={editingProduct ? handleUpdateProduct : handleAddProduct}
               disabled={state.loading}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CheckCircleIcon className="h-4 w-4" />
               <span>{editingProduct ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</span>
@@ -498,7 +498,7 @@ const ProductManagement = () => {
           title="Tổng sản phẩm"
           value={state.products.length}
           icon={CubeIcon}
-          color="bg-gradient-to-br from-blue-500 to-blue-600"
+          color="bg-gradient-to-br from-pink-500 to-rose-600"
         />
         
         <StatCard
@@ -571,8 +571,8 @@ const ProductManagement = () => {
                     <tr key={product.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
-                            <CubeIcon className="h-6 w-6 text-blue-600" />
+                          <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl flex items-center justify-center">
+                            <CubeIcon className="h-6 w-6 text-pink-600" />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-semibold text-slate-900">
@@ -638,7 +638,7 @@ const ProductManagement = () => {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             onClick={() => handleEditProduct(product)}
-                            className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-100 rounded-lg transition-all"
+                            className="p-2 text-pink-600 hover:text-pink-900 hover:bg-pink-100 rounded-lg transition-all"
                             title="Chỉnh sửa"
                           >
                             <PencilIcon className="h-4 w-4" />

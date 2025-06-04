@@ -49,16 +49,16 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-rose-50">
       <div className="max-w-md w-full space-y-8 p-8">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-pink-100/50">
           {/* Header */}
           <div className="text-center">
-            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mb-4">
               <UserIcon className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Đăng nhập</h2>
-            <p className="text-gray-600">Hệ thống quản lý thanh toán của MixxStore</p>
+            <p className="text-gray-600">Hệ thống quản lý thanh toán của Mixx Store</p>
           </div>
 
           {/* Form */}
@@ -80,7 +80,7 @@ const Login = ({ onLogin }) => {
                     required
                     value={formData.username}
                     onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="block w-full pl-10 pr-3 py-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200"
                     placeholder="Nhập tên đăng nhập"
                   />
                 </div>
@@ -102,7 +102,7 @@ const Login = ({ onLogin }) => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="block w-full pl-10 pr-10 py-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200"
                     placeholder="Nhập mật khẩu"
                   />
                   <button
@@ -125,7 +125,7 @@ const Login = ({ onLogin }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
               >
                 {isLoading ? (
                   <div className="flex items-center">
@@ -139,9 +139,9 @@ const Login = ({ onLogin }) => {
             </div>
 
             {/* Demo Account Info */}
-            {/* <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-medium text-blue-800 mb-2">Tài khoản demo:</h4>
-              <p className="text-xs text-blue-600">
+            {/* <div className="mt-6 p-4 bg-pink-50 rounded-lg border border-pink-200">
+              <h4 className="text-sm font-medium text-pink-800 mb-2">Tài khoản demo:</h4>
+              <p className="text-xs text-pink-600">
                 Username: admin<br />
                 Password: admin123
               </p>

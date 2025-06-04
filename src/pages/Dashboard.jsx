@@ -154,7 +154,7 @@ const Dashboard = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, color, subtitle, trend }) => (
-    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]">
+    <div className="bg-white rounded-2xl p-6 border border-pink-100 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className={`p-3 rounded-xl ${color} shadow-lg`}>
@@ -185,7 +185,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
       </div>
     );
   }
@@ -195,7 +195,7 @@ const Dashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
             Trang tổng quan
           </h1>
           <p className="text-slate-600 mt-1">Xem tổng quan hoạt động kinh doanh của bạn</p>
@@ -212,7 +212,7 @@ const Dashboard = () => {
           title="Doanh thu tháng này"
           value={formatCurrency(stats.monthlyRevenue)}
           icon={CurrencyDollarIcon}
-          color="bg-gradient-to-br from-green-500 to-green-600"
+          color="bg-gradient-to-br from-pink-400 to-rose-500"
           subtitle={`${stats.monthlyTransactions} giao dịch`}
           trend={{ 
             type: stats.monthlyRevenueGrowth >= 0 ? 'up' : 'down', 
@@ -224,7 +224,7 @@ const Dashboard = () => {
           title="Doanh thu hôm nay"
           value={formatCurrency(stats.todayRevenue)}
           icon={ArrowTrendingUpIcon}
-          color="bg-gradient-to-br from-blue-500 to-blue-600"
+          color="bg-gradient-to-br from-rose-400 to-pink-500"
           subtitle={`${stats.todayTransactions} giao dịch`}
           trend={{ 
             type: stats.todayRevenueGrowth >= 0 ? 'up' : 'down', 
@@ -236,7 +236,7 @@ const Dashboard = () => {
           title="Tổng sản phẩm"
           value={stats.totalProducts}
           icon={CubeIcon}
-          color="bg-gradient-to-br from-purple-500 to-purple-600"
+          color="bg-gradient-to-br from-pink-500 to-rose-600"
           subtitle={`${stats.lowStockProducts} sắp hết hàng`}
           trend={{ 
             type: stats.productGrowth >= 0 ? 'up' : 'down', 
@@ -251,33 +251,33 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
+      <div className="bg-white rounded-2xl p-6 border border-pink-100 shadow-lg">
         <h3 className="text-lg font-semibold text-slate-900 mb-6">Thao tác nhanh</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Link 
             to="/invoices"
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+            className="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <ShoppingBagIcon className="h-5 w-5" />
             <span>Tạo hóa đơn mới</span>
           </Link>
           <Link 
             to="/invoice-list"
-            className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-indigo-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+            className="bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-rose-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <DocumentTextIcon className="h-5 w-5" />
             <span>Danh sách hóa đơn</span>
           </Link>
           <Link 
             to="/products"
-            className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-purple-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+            className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <CubeIcon className="h-5 w-5" />
             <span>Thêm sản phẩm</span>
           </Link>
           <Link 
             to="/reports"
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-green-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+            className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-rose-500/25 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <ArrowTrendingUpIcon className="h-5 w-5" />
             <span>Xem báo cáo</span>

@@ -146,8 +146,8 @@ const RevenueChart = () => {
         {
           label: 'Doanh thu (VNĐ)',
           data: revenues,
-          backgroundColor: 'rgba(59, 130, 246, 0.8)',
-          borderColor: 'rgba(59, 130, 246, 1)',
+          backgroundColor: 'rgba(236, 72, 153, 0.8)',
+          borderColor: 'rgba(236, 72, 153, 1)',
           borderWidth: 1,
           borderRadius: 4,
           borderSkipped: false,
@@ -177,7 +177,7 @@ const RevenueChart = () => {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         titleColor: '#fff',
         bodyColor: '#fff',
-        borderColor: 'rgba(59, 130, 246, 1)',
+        borderColor: 'rgba(236, 72, 153, 1)',
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: false,
@@ -297,7 +297,7 @@ const RevenueChart = () => {
           <p className="text-red-600 mb-4">{error}</p>
           <button
             onClick={handleRetry}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors"
           >
             Thử lại
           </button>
@@ -339,9 +339,9 @@ const RevenueChart = () => {
           </div>
 
           {/* Total revenue display */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-4">
-            <div className="text-sm text-blue-600 mb-1">Tổng doanh thu tháng này</div>
-            <div className="text-2xl font-bold text-blue-900">
+          <div className="bg-pink-50 rounded-lg p-4 mb-4">
+            <div className="text-sm text-pink-600 mb-1">Tổng doanh thu tháng này</div>
+            <div className="text-2xl font-bold text-pink-900">
               {formatCurrency(totalRevenue)}
             </div>
           </div>
