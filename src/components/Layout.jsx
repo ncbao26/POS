@@ -95,7 +95,7 @@ const Layout = ({ children, user, onLogout }) => {
         <div className="flex grow flex-col bg-white/80 backdrop-blur-md border-r border-white/20 shadow-xl">
           <div className="flex h-16 shrink-0 items-center px-6 border-b border-white/20">
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              WebThanhToan
+              POS - MixxStore
             </h1>
           </div>
           <nav className="flex flex-1 flex-col p-6">
@@ -156,7 +156,7 @@ const Layout = ({ children, user, onLogout }) => {
             <Bars3Icon className="h-6 w-6" />
           </button>
           <div className="flex-1 text-sm font-semibold leading-6 text-slate-900">
-            WebThanhToan
+            POS - MixxStore
           </div>
           <div className="flex items-center">
             <div className="h-8 w-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
