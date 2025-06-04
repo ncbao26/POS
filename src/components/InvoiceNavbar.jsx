@@ -248,7 +248,7 @@ const InvoiceNavbar = () => {
         fullInvoice = await invoicesAPI.getById(invoice.id);
       }
 
-      // Tạo HTML template cho in hóa đơn
+      // Tạo HTML template cho in hóa đơn - Khổ K80 (80mm x 45mm)
       const printContent = `
         <!DOCTYPE html>
         <html>
@@ -258,12 +258,8 @@ const InvoiceNavbar = () => {
           <style>
             @media print {
               @page {
-                size: A4;
-                margin: 10mm;
-              }
-              body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                size: 80mm 45mm;
+                margin: 2mm;
               }
             }
             
@@ -274,126 +270,128 @@ const InvoiceNavbar = () => {
             }
             
             body {
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              font-size: 12px;
-              line-height: 1.4;
-              color: #333;
+              font-family: 'Courier New', monospace;
+              font-size: 8px;
+              line-height: 1.2;
+              color: #000;
               background: white;
+              width: 76mm;
+              margin: 0 auto;
             }
             
             .invoice-container {
-              max-width: 210mm;
-              margin: 0 auto;
-              padding: 20px;
-              background: white;
+              width: 100%;
+              padding: 1mm;
             }
             
             .header {
               text-align: center;
-              border-bottom: 2px solid #2563eb;
-              padding-bottom: 20px;
-              margin-bottom: 20px;
+              border-bottom: 1px solid #000;
+              padding-bottom: 2mm;
+              margin-bottom: 2mm;
             }
             
             .company-name {
-              font-size: 24px;
+              font-size: 12px;
               font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 5px;
+              margin-bottom: 1mm;
             }
             
             .company-info {
-              font-size: 11px;
-              color: #666;
-              margin-bottom: 10px;
+              font-size: 7px;
+              margin-bottom: 1mm;
             }
             
             .invoice-title {
-              font-size: 20px;
+              font-size: 10px;
               font-weight: bold;
-              color: #1f2937;
-              margin-top: 15px;
+              margin-top: 1mm;
             }
             
             .paid-notice {
-              background: #dcfce7;
-              color: #166534;
-              padding: 10px;
-              border-radius: 8px;
               text-align: center;
               font-weight: bold;
-              margin-bottom: 20px;
-              border: 2px solid #16a34a;
+              margin-bottom: 2mm;
+              font-size: 8px;
+              border: 1px solid #000;
+              padding: 1mm;
             }
             
             .invoice-info {
-              display: flex;
-              justify-content: space-between;
-              margin-bottom: 20px;
-              gap: 20px;
-            }
-            
-            .invoice-details, .customer-details {
-              flex: 1;
-              padding: 15px;
-              background: #f8fafc;
-              border-radius: 8px;
-              border: 1px solid #e2e8f0;
-            }
-            
-            .section-title {
-              font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 10px;
-              font-size: 13px;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
+              margin-bottom: 2mm;
             }
             
             .info-row {
               display: flex;
               justify-content: space-between;
-              margin-bottom: 5px;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
             }
             
             .info-label {
-              font-weight: 500;
-              color: #4b5563;
+              font-weight: bold;
             }
             
-            .info-value {
-              color: #1f2937;
+            .items-section {
+              margin: 2mm 0;
             }
             
-            .items-table {
-              width: 100%;
-              border-collapse: collapse;
-              margin: 20px 0;
-              background: white;
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            .items-header {
+              border-bottom: 1px solid #000;
+              padding-bottom: 1mm;
+              margin-bottom: 1mm;
+              font-size: 7px;
+              font-weight: bold;
             }
             
-            .items-table th {
-              background: #2563eb;
-              color: white;
-              padding: 12px 8px;
-              text-align: left;
-              font-weight: 600;
-              font-size: 11px;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
+            .item-row {
+              margin-bottom: 1mm;
+              font-size: 7px;
             }
             
-            .items-table td {
-              padding: 10px 8px;
-              border-bottom: 1px solid #e2e8f0;
-              font-size: 11px;
+            .item-name {
+              font-weight: bold;
+              margin-bottom: 0.5mm;
             }
             
-            .items-table tr:nth-child(even) {
-              background: #f8fafc;
+            .item-details {
+              display: flex;
+              justify-content: space-between;
+            }
+            
+            .summary {
+              border-top: 1px solid #000;
+              padding-top: 1mm;
+              margin-top: 2mm;
+            }
+            
+            .summary-row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
+            }
+            
+            .total-row {
+              font-weight: bold;
+              font-size: 8px;
+              border-top: 1px solid #000;
+              border-bottom: 1px solid #000;
+              padding: 1mm 0;
+              margin-top: 1mm;
+            }
+            
+            .payment-info {
+              margin-top: 2mm;
+              font-size: 7px;
+            }
+            
+            .footer {
+              margin-top: 2mm;
+              text-align: center;
+              font-size: 6px;
+              border-top: 1px solid #000;
+              padding-top: 1mm;
             }
             
             .text-right {
@@ -404,92 +402,9 @@ const InvoiceNavbar = () => {
               text-align: center;
             }
             
-            .product-name {
-              font-weight: 500;
-              color: #1f2937;
-            }
-            
-            .summary {
-              margin-top: 20px;
-              display: flex;
-              justify-content: flex-end;
-            }
-            
-            .summary-table {
-              width: 300px;
-              border-collapse: collapse;
-            }
-            
-            .summary-table td {
-              padding: 8px 12px;
-              border-bottom: 1px solid #e2e8f0;
-            }
-            
-            .summary-table .label {
-              font-weight: 500;
-              color: #4b5563;
-            }
-            
-            .summary-table .value {
-              text-align: right;
-              color: #1f2937;
-            }
-            
-            .total-row {
-              background: #2563eb;
-              color: white;
-              font-weight: bold;
-              font-size: 14px;
-            }
-            
-            .total-row td {
-              border-bottom: none;
-            }
-            
-            .payment-info {
-              margin-top: 20px;
-              padding: 15px;
-              background: #f0f9ff;
-              border-radius: 8px;
-              border-left: 4px solid #2563eb;
-            }
-            
-            .notes {
-              margin-top: 20px;
-              padding: 15px;
-              background: #fffbeb;
-              border-radius: 8px;
-              border-left: 4px solid #f59e0b;
-            }
-            
-            .footer {
-              margin-top: 30px;
-              text-align: center;
-              padding-top: 20px;
-              border-top: 1px solid #e2e8f0;
-              color: #6b7280;
-              font-size: 11px;
-            }
-            
-            .thank-you {
-              font-size: 16px;
-              font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 10px;
-            }
-            
-            .currency {
-              font-weight: 500;
-            }
-            
             @media print {
               .invoice-container {
-                max-width: none;
                 padding: 0;
-              }
-              
-              .no-print {
-                display: none !important;
               }
             }
           </style>
@@ -498,144 +413,117 @@ const InvoiceNavbar = () => {
           <div class="invoice-container">
             <!-- Header -->
             <div class="header">
-              <div class="company-name">CỬA HÀNG BÁN LẺ</div>
+              <div class="company-name">MIXX STORE</div>
               <div class="company-info">
-                Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM<br>
-                Điện thoại: (028) 1234 5678 | Email: info@cuahang.com<br>
-                Website: www.cuahang.com
+                136 Nguyễn Trọng Tuyển, P.8, Phú Nhuận, TP.HCM<br>
+                DT: 0376 302 306
               </div>
-              <div class="invoice-title">HÓA ĐƠN BÁN HÀNG</div>
+              <div class="invoice-title">HOÁ ĐƠN BÁN HÀNG</div>
             </div>
 
-            ${fullInvoice.paymentStatus === 'PAID' ? '<div class="paid-notice">✅ ĐÃ THANH TOÁN</div>' : ''}
+            ${fullInvoice.paymentStatus === 'PAID' ? '<div class="paid-notice">DA THANH TOAN</div>' : ''}
 
-            <!-- Invoice & Customer Info -->
+            <!-- Invoice Info -->
             <div class="invoice-info">
-              <div class="invoice-details">
-                <div class="section-title">Thông tin hóa đơn</div>
-                <div class="info-row">
-                  <span class="info-label">Mã hóa đơn:</span>
-                  <span class="info-value">${fullInvoice.invoiceNumber}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Ngày tạo:</span>
-                  <span class="info-value">${fullInvoice.createdAt ? new Date(fullInvoice.createdAt).toLocaleDateString('vi-VN') : 'N/A'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Giờ tạo:</span>
-                  <span class="info-value">${fullInvoice.createdAt ? new Date(fullInvoice.createdAt).toLocaleTimeString('vi-VN') : 'N/A'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Phương thức:</span>
-                  <span class="info-value">${fullInvoice.paymentMethod === 'CASH' ? 'Tiền mặt' : fullInvoice.paymentMethod === 'TRANSFER' ? 'Chuyển khoản' : fullInvoice.paymentMethod === 'CARD' ? 'Thẻ tín dụng' : fullInvoice.paymentMethod}</span>
-                </div>
+              <div class="info-row">
+                <span class="info-label">Mã HD:</span>
+                <span>${fullInvoice.invoiceNumber}</span>
               </div>
-
-              <div class="customer-details">
-                <div class="section-title">Thông tin khách hàng</div>
-                <div class="info-row">
-                  <span class="info-label">Tên khách hàng:</span>
-                  <span class="info-value">${fullInvoice.customer?.name || 'Khách lẻ'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Số điện thoại:</span>
-                  <span class="info-value">${fullInvoice.customer?.phone || 'Không có'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Email:</span>
-                  <span class="info-value">${fullInvoice.customer?.email || 'Không có'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Địa chỉ:</span>
-                  <span class="info-value">${fullInvoice.customer?.address || 'Không có'}</span>
-                </div>
+              <div class="info-row">
+                <span class="info-label">Ngày:</span>
+                <span>${fullInvoice.createdAt ? new Date(fullInvoice.createdAt).toLocaleDateString('vi-VN') : 'N/A'}</span>
               </div>
+              <div class="info-row">
+                <span class="info-label">Giờ:</span>
+                <span>${fullInvoice.createdAt ? new Date(fullInvoice.createdAt).toLocaleTimeString('vi-VN') : 'N/A'}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">KH:</span>
+                <span>${fullInvoice.customer?.name || 'Khách lẻ'}</span>
+              </div>
+              ${fullInvoice.customer?.phone ? `
+              <div class="info-row">
+                <span class="info-label">SDT:</span>
+                <span>${fullInvoice.customer.phone}</span>
+              </div>
+              ` : ''}
             </div>
 
-            <!-- Items Table -->
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th style="width: 5%">STT</th>
-                  <th style="width: 35%">Tên sản phẩm</th>
-                  <th style="width: 10%" class="text-center">SL</th>
-                  <th style="width: 15%" class="text-right">Đơn giá</th>
-                  <th style="width: 15%" class="text-right">Tạm tính</th>
-                  <th style="width: 10%" class="text-right">Giảm giá</th>
-                  <th style="width: 15%" class="text-right">Thành tiền</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${fullInvoice.items && fullInvoice.items.length > 0 ? fullInvoice.items.map((item, index) => {
-                  // Xử lý cấu trúc dữ liệu khác nhau từ API
-                  const itemPrice = item.unitPrice || item.price || 0;
-                  const itemQuantity = item.quantity || 0;
-                  const itemSubtotal = itemPrice * itemQuantity;
-                  const itemDiscountAmount = item.discountAmount || 0;
-                  const itemDiscountPercent = item.discountPercentage || 0;
-                  const totalItemDiscount = itemDiscountAmount + (itemSubtotal * itemDiscountPercent / 100);
-                  const itemTotal = itemSubtotal - totalItemDiscount;
-                  
-                  // Lấy tên sản phẩm từ nhiều nguồn có thể
-                  const productName = item.product?.name || item.productName || `Sản phẩm ID: ${item.productId || 'N/A'}`;
-                  
-                  return `
-                    <tr>
-                      <td class="text-center">${index + 1}</td>
-                      <td class="product-name">${productName}</td>
-                      <td class="text-center">${itemQuantity}</td>
-                      <td class="text-right currency">${formatCurrency(itemPrice)}</td>
-                      <td class="text-right currency">${formatCurrency(itemSubtotal)}</td>
-                      <td class="text-right currency">${totalItemDiscount > 0 ? formatCurrency(totalItemDiscount) : '-'}</td>
-                      <td class="text-right currency">${formatCurrency(itemTotal)}</td>
-                    </tr>
-                  `;
-                }).join('') : `
-                  <tr>
-                    <td colspan="7" class="text-center" style="padding: 20px; color: #6b7280;">
-                      Không có sản phẩm nào
-                    </td>
-                  </tr>
-                `}
-              </tbody>
-            </table>
+            <!-- Items -->
+            <div class="items-section">
+              <div class="items-header">
+                SẢN PHẨM
+              </div>
+              ${fullInvoice.items && fullInvoice.items.length > 0 ? fullInvoice.items.map((item, index) => {
+                // Xử lý cấu trúc dữ liệu khác nhau từ API
+                const itemPrice = item.unitPrice || item.price || 0;
+                const itemQuantity = item.quantity || 0;
+                const itemSubtotal = itemPrice * itemQuantity;
+                const itemDiscountAmount = item.discountAmount || 0;
+                const itemDiscountPercent = item.discountPercentage || 0;
+                const totalItemDiscount = itemDiscountAmount + (itemSubtotal * itemDiscountPercent / 100);
+                const itemTotal = itemSubtotal - totalItemDiscount;
+                
+                // Lấy tên sản phẩm từ nhiều nguồn có thể
+                const productName = item.product?.name || item.productName || `Sản phẩm ID: ${item.productId || 'N/A'}`;
+                
+                return `
+                  <div class="item-row">
+                    <div class="item-name">${productName}</div>
+                    <div class="item-details">
+                      <span>${itemQuantity} x ${formatCurrency(itemPrice)}</span>
+                      <span>${formatCurrency(itemTotal)}</span>
+                    </div>
+                    ${totalItemDiscount > 0 ? `
+                    <div class="item-details">
+                      <span>Giảm giá:</span>
+                      <span>-${formatCurrency(totalItemDiscount)}</span>
+                    </div>
+                    ` : ''}
+                  </div>
+                `;
+              }).join('') : `
+                <div class="item-row">
+                  <div class="text-center">Không có sản phẩm nào</div>
+                </div>
+              `}
+            </div>
 
             <!-- Summary -->
             <div class="summary">
-              <table class="summary-table">
-                <tr>
-                  <td class="label">Tổng phụ:</td>
-                  <td class="value currency">${formatCurrency(fullInvoice.subtotal || 0)}</td>
-                </tr>
-                ${fullInvoice.discountAmount > 0 ? `
-                  <tr>
-                    <td class="label">Giảm giá hóa đơn:</td>
-                    <td class="value currency">-${formatCurrency(fullInvoice.discountAmount)}</td>
-                  </tr>
-                ` : ''}
-                ${fullInvoice.discountPercentage > 0 ? `
-                  <tr>
-                    <td class="label">Giảm giá (${fullInvoice.discountPercentage}%):</td>
-                    <td class="value currency">-${formatCurrency((fullInvoice.subtotal || 0) * (fullInvoice.discountPercentage || 0) / 100)}</td>
-                  </tr>
-                ` : ''}
-                <tr class="total-row">
-                  <td class="label">TỔNG CỘNG:</td>
-                  <td class="value currency">${formatCurrency(fullInvoice.totalAmount || 0)}</td>
-                </tr>
-              </table>
+              <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span>${formatCurrency(fullInvoice.subtotal || 0)}</span>
+              </div>
+              ${fullInvoice.discountAmount > 0 ? `
+                <div class="summary-row">
+                  <span>Giảm giá HD:</span>
+                  <span>-${formatCurrency(fullInvoice.discountAmount)}</span>
+                </div>
+              ` : ''}
+              ${fullInvoice.discountPercentage > 0 ? `
+                <div class="summary-row">
+                  <span>Giảm giá (${fullInvoice.discountPercentage}%):</span>
+                  <span>-${formatCurrency((fullInvoice.subtotal || 0) * (fullInvoice.discountPercentage || 0) / 100)}</span>
+                </div>
+              ` : ''}
+              <div class="total-row">
+                <div class="item-details">
+                  <span>TỔNG CỘNG:</span>
+                  <span>${formatCurrency(fullInvoice.totalAmount || 0)}</span>
+                </div>
+              </div>
             </div>
 
             <!-- Payment Info -->
             <div class="payment-info">
-              <div class="section-title">Thông tin thanh toán</div>
               <div class="info-row">
-                <span class="info-label">Phương thức thanh toán:</span>
-                <span class="info-value">
+                <span class="info-label">Thanh toán:</span>
+                <span>
                   ${
-                    fullInvoice.paymentMethod === 'CASH' ? '💵 Tiền mặt' : 
-                    fullInvoice.paymentMethod === 'TRANSFER' ? '🏦 Chuyển khoản' : 
-                    fullInvoice.paymentMethod === 'CARD' ? '💳 Thẻ tín dụng' : 
+                    fullInvoice.paymentMethod === 'CASH' ? 'Tiền mặt' : 
+                    fullInvoice.paymentMethod === 'TRANSFER' ? 'Chuyển khoản' : 
+                    fullInvoice.paymentMethod === 'CARD' ? 'Thẻ tín dụng' : 
                     fullInvoice.paymentMethod || 'Không xác định'
                   }
                 </span>
@@ -644,20 +532,18 @@ const InvoiceNavbar = () => {
 
             ${fullInvoice.notes ? `
               <!-- Notes -->
-              <div class="notes">
-                <div class="section-title">Ghi chú</div>
-                <p>${fullInvoice.notes}</p>
+              <div class="payment-info">
+                <div class="info-row">
+                  <span class="info-label">Ghi chú:</span>
+                  <span>${fullInvoice.notes}</span>
+                </div>
               </div>
             ` : ''}
 
             <!-- Footer -->
             <div class="footer">
-              <div class="thank-you">🙏 Cảm ơn quý khách đã mua hàng!</div>
-              <p>Hẹn gặp lại quý khách trong những lần mua sắm tiếp theo.</p>
-              <p style="margin-top: 10px;">
-                In lúc: ${new Date().toLocaleString('vi-VN')} | 
-                Nhân viên: Admin
-              </p>
+              <div>Cảm ơn quý khách!</div>
+              <div>In luc: ${new Date().toLocaleString('vi-VN')}</div>
             </div>
           </div>
         </body>
@@ -807,7 +693,7 @@ const InvoiceNavbar = () => {
               disabled={page === '...'}
               className={`px-3 py-2 rounded-lg border text-sm font-medium ${
                 page === currentPage
-                  ? 'border-blue-500 bg-blue-500 text-white'
+                  ? 'border-pink-500 bg-pink-500 text-white'
                   : page === '...'
                   ? 'border-transparent text-slate-400 cursor-default'
                   : 'border-slate-300 text-slate-600 hover:bg-slate-50'
@@ -838,7 +724,7 @@ const InvoiceNavbar = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
             Danh sách hóa đơn
           </h1>
           <p className="text-slate-600 mt-1">Quản lý và theo dõi tất cả hóa đơn bán hàng</p>
@@ -855,7 +741,7 @@ const InvoiceNavbar = () => {
       <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-slate-900 flex items-center">
-            <FunnelIcon className="h-5 w-5 mr-2 text-blue-600" />
+            <FunnelIcon className="h-5 w-5 mr-2 text-pink-600" />
             Bộ lọc
           </h3>
           <span className="text-sm text-slate-500">
@@ -870,7 +756,7 @@ const InvoiceNavbar = () => {
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
             >
               <option value="all">Tất cả</option>
               <option value="today">Hôm nay</option>
@@ -890,7 +776,7 @@ const InvoiceNavbar = () => {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 />
               </div>
               <div>
@@ -899,7 +785,7 @@ const InvoiceNavbar = () => {
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 />
               </div>
             </>
@@ -911,7 +797,7 @@ const InvoiceNavbar = () => {
             <select
               value={paymentStatus}
               onChange={(e) => setPaymentStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
             >
               <option value="">Tất cả</option>
               <option value="PAID">Đã thanh toán</option>
@@ -931,7 +817,7 @@ const InvoiceNavbar = () => {
               placeholder="Tìm theo mã hóa đơn, tên khách hàng, số điện thoại..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
             />
           </div>
         </div>
@@ -941,14 +827,14 @@ const InvoiceNavbar = () => {
       <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-slate-900 flex items-center">
-            <ShoppingBagIcon className="h-5 w-5 mr-2 text-blue-600" />
+            <ShoppingBagIcon className="h-5 w-5 mr-2 text-pink-600" />
             Danh sách hóa đơn ({filteredInvoices.length})
           </h3>
         </div>
         
         {loading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
           </div>
         ) : currentInvoices.length > 0 ? (
           <>
@@ -1081,7 +967,7 @@ const InvoiceNavbar = () => {
                 <select
                   value={editForm.customerId}
                   onChange={(e) => setEditForm(prev => ({ ...prev, customerId: e.target.value }))}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 >
                   <option value="">Khách lẻ</option>
                   {customers.map(customer => (
@@ -1100,7 +986,7 @@ const InvoiceNavbar = () => {
                 <select
                   value={editForm.paymentMethod}
                   onChange={(e) => setEditForm(prev => ({ ...prev, paymentMethod: e.target.value }))}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 >
                   <option value="CASH">Tiền mặt</option>
                   <option value="TRANSFER">Chuyển khoản</option>
@@ -1116,9 +1002,9 @@ const InvoiceNavbar = () => {
                   </label>
                   <button
                     onClick={() => setShowProductSuggestions(true)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                    className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors flex items-center space-x-2"
                   >
-                    <PlusIcon className="h-4 w-4" />
+                    <PlusIcon className="h-5 w-5" />
                     <span>Thêm sản phẩm</span>
                   </button>
                 </div>
@@ -1159,7 +1045,7 @@ const InvoiceNavbar = () => {
                                 setFilteredProducts(products.slice(0, 10));
                               }
                             }}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                           />
                         </div>
                       </div>
@@ -1201,7 +1087,7 @@ const InvoiceNavbar = () => {
                                 Giá: {formatCurrency(product.price)} • Tồn: {product.stock}
                               </p>
                             </div>
-                            <PlusIcon className="h-5 w-5 text-blue-600" />
+                            <PlusIcon className="h-5 w-5 text-pink-600" />
                           </div>
                         ))}
                       </div>
@@ -1267,7 +1153,7 @@ const InvoiceNavbar = () => {
                     min="0"
                     value={editForm.discountAmount}
                     onChange={(e) => setEditForm(prev => ({ ...prev, discountAmount: parseFloat(e.target.value) || 0 }))}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -1280,7 +1166,7 @@ const InvoiceNavbar = () => {
                     max="100"
                     value={editForm.discountPercentage}
                     onChange={(e) => setEditForm(prev => ({ ...prev, discountPercentage: parseFloat(e.target.value) || 0 }))}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -1294,7 +1180,7 @@ const InvoiceNavbar = () => {
                   value={editForm.notes}
                   onChange={(e) => setEditForm(prev => ({ ...prev, notes: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                   placeholder="Ghi chú cho hóa đơn..."
                 />
               </div>
@@ -1310,7 +1196,7 @@ const InvoiceNavbar = () => {
               </button>
               <button
                 onClick={handleSaveInvoice}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-colors"
               >
                 Lưu thay đổi
               </button>

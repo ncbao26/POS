@@ -405,7 +405,7 @@ const InvoiceManagement = () => {
 
   const handlePrintCompletedInvoice = (invoice) => {
     try {
-      // Tạo HTML template cho in hóa đơn đã thanh toán
+      // Tạo HTML template cho in hóa đơn đã thanh toán - Khổ K80 (80mm x 45mm)
       const printContent = `
         <!DOCTYPE html>
         <html>
@@ -415,12 +415,8 @@ const InvoiceManagement = () => {
           <style>
             @media print {
               @page {
-                size: A4;
-                margin: 10mm;
-              }
-              body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                size: 80mm 45mm;
+                margin: 2mm;
               }
             }
             
@@ -431,126 +427,128 @@ const InvoiceManagement = () => {
             }
             
             body {
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              font-size: 12px;
-              line-height: 1.4;
-              color: #333;
+              font-family: 'Courier New', monospace;
+              font-size: 8px;
+              line-height: 1.2;
+              color: #000;
               background: white;
+              width: 76mm;
+              margin: 0 auto;
             }
             
             .invoice-container {
-              max-width: 210mm;
-              margin: 0 auto;
-              padding: 20px;
-              background: white;
+              width: 100%;
+              padding: 1mm;
             }
             
             .header {
               text-align: center;
-              border-bottom: 2px solid #2563eb;
-              padding-bottom: 20px;
-              margin-bottom: 20px;
+              border-bottom: 1px solid #000;
+              padding-bottom: 2mm;
+              margin-bottom: 2mm;
             }
             
             .company-name {
-              font-size: 24px;
+              font-size: 12px;
               font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 5px;
+              margin-bottom: 1mm;
             }
             
             .company-info {
-              font-size: 11px;
-              color: #666;
-              margin-bottom: 10px;
+              font-size: 7px;
+              margin-bottom: 1mm;
             }
             
             .invoice-title {
-              font-size: 20px;
+              font-size: 10px;
               font-weight: bold;
-              color: #1f2937;
-              margin-top: 15px;
+              margin-top: 1mm;
             }
             
             .paid-notice {
-              background: #dcfce7;
-              color: #166534;
-              padding: 10px;
-              border-radius: 8px;
               text-align: center;
               font-weight: bold;
-              margin-bottom: 20px;
-              border: 2px solid #16a34a;
+              margin-bottom: 2mm;
+              font-size: 8px;
+              border: 1px solid #000;
+              padding: 1mm;
             }
             
             .invoice-info {
-              display: flex;
-              justify-content: space-between;
-              margin-bottom: 20px;
-              gap: 20px;
-            }
-            
-            .invoice-details, .customer-details {
-              flex: 1;
-              padding: 15px;
-              background: #f8fafc;
-              border-radius: 8px;
-              border: 1px solid #e2e8f0;
-            }
-            
-            .section-title {
-              font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 10px;
-              font-size: 13px;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
+              margin-bottom: 2mm;
             }
             
             .info-row {
               display: flex;
               justify-content: space-between;
-              margin-bottom: 5px;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
             }
             
             .info-label {
-              font-weight: 500;
-              color: #4b5563;
+              font-weight: bold;
             }
             
-            .info-value {
-              color: #1f2937;
+            .items-section {
+              margin: 2mm 0;
             }
             
-            .items-table {
-              width: 100%;
-              border-collapse: collapse;
-              margin: 20px 0;
-              background: white;
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            .items-header {
+              border-bottom: 1px solid #000;
+              padding-bottom: 1mm;
+              margin-bottom: 1mm;
+              font-size: 7px;
+              font-weight: bold;
             }
             
-            .items-table th {
-              background: #2563eb;
-              color: white;
-              padding: 12px 8px;
-              text-align: left;
-              font-weight: 600;
-              font-size: 11px;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
+            .item-row {
+              margin-bottom: 1mm;
+              font-size: 7px;
             }
             
-            .items-table td {
-              padding: 10px 8px;
-              border-bottom: 1px solid #e2e8f0;
-              font-size: 11px;
+            .item-name {
+              font-weight: bold;
+              margin-bottom: 0.5mm;
             }
             
-            .items-table tr:nth-child(even) {
-              background: #f8fafc;
+            .item-details {
+              display: flex;
+              justify-content: space-between;
+            }
+            
+            .summary {
+              border-top: 1px solid #000;
+              padding-top: 1mm;
+              margin-top: 2mm;
+            }
+            
+            .summary-row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
+            }
+            
+            .total-row {
+              font-weight: bold;
+              font-size: 8px;
+              border-top: 1px solid #000;
+              border-bottom: 1px solid #000;
+              padding: 1mm 0;
+              margin-top: 1mm;
+            }
+            
+            .payment-info {
+              margin-top: 2mm;
+              font-size: 7px;
+            }
+            
+            .footer {
+              margin-top: 2mm;
+              text-align: center;
+              font-size: 6px;
+              border-top: 1px solid #000;
+              padding-top: 1mm;
             }
             
             .text-right {
@@ -561,91 +559,8 @@ const InvoiceManagement = () => {
               text-align: center;
             }
             
-            .product-name {
-              font-weight: 500;
-              color: #1f2937;
-            }
-            
-            .summary {
-              margin-top: 20px;
-              display: flex;
-              justify-content: flex-end;
-            }
-            
-            .summary-table {
-              width: 300px;
-              border-collapse: collapse;
-            }
-            
-            .summary-table td {
-              padding: 8px 12px;
-              border-bottom: 1px solid #e2e8f0;
-            }
-            
-            .summary-table .label {
-              font-weight: 500;
-              color: #4b5563;
-            }
-            
-            .summary-table .value {
-              text-align: right;
-              color: #1f2937;
-            }
-            
-            .total-row {
-              background: #2563eb;
-              color: white;
-              font-weight: bold;
-              font-size: 14px;
-            }
-            
-            .total-row td {
-              border-bottom: none;
-            }
-            
-            .payment-info {
-              margin-top: 20px;
-              padding: 15px;
-              background: #f0f9ff;
-              border-radius: 8px;
-              border-left: 4px solid #2563eb;
-            }
-            
-            .footer {
-              margin-top: 30px;
-              text-align: center;
-              padding-top: 20px;
-              border-top: 1px solid #e2e8f0;
-              color: #6b7280;
-              font-size: 11px;
-            }
-            
-            .thank-you {
-              font-size: 16px;
-              font-weight: bold;
-              color: #2563eb;
-              margin-bottom: 10px;
-            }
-            
-            .currency {
-              font-weight: 500;
-            }
-            
-            .status-badge {
-              display: inline-block;
-              padding: 4px 8px;
-              border-radius: 4px;
-              font-size: 10px;
-              font-weight: 600;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-              background: #dcfce7;
-              color: #166534;
-            }
-            
             @media print {
               .invoice-container {
-                max-width: none;
                 padding: 0;
               }
             }
@@ -655,163 +570,123 @@ const InvoiceManagement = () => {
           <div class="invoice-container">
             <!-- Header -->
             <div class="header">
-              <div class="company-name">CỬA HÀNG BÁN LẺ</div>
+              <div class="company-name">MIXX STORE</div>
               <div class="company-info">
-                Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM<br>
-                Điện thoại: (028) 1234 5678 | Email: info@cuahang.com<br>
-                Website: www.cuahang.com
+                136 Nguyễn Trọng Tuyển, P.8, Phú Nhuận, TP.HCM<br>
+                DT: 0376 302 306
               </div>
-              <div class="invoice-title">HÓA ĐƠN BÁN HÀNG</div>
+              <div class="invoice-title">HOÁ ĐƠN BÁN HÀNG</div>
             </div>
 
             <!-- Paid Notice -->
             <div class="paid-notice">
-              ✅ HÓA ĐƠN ĐÃ THANH TOÁN THÀNH CÔNG ✅
+              ĐÃ THANH TOÁN
             </div>
 
-            <!-- Invoice & Customer Info -->
+            <!-- Invoice Info -->
             <div class="invoice-info">
-              <div class="invoice-details">
-                <div class="section-title">Thông tin hóa đơn</div>
-                <div class="info-row">
-                  <span class="info-label">Mã hóa đơn:</span>
-                  <span class="info-value">${invoice.invoiceNumber}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Ngày tạo:</span>
-                  <span class="info-value">${invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN')}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Giờ tạo:</span>
-                  <span class="info-value">${invoice.createdAt ? new Date(invoice.createdAt).toLocaleTimeString('vi-VN') : new Date().toLocaleTimeString('vi-VN')}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Trạng thái:</span>
-                  <span class="info-value">
-                    <span class="status-badge">Đã thanh toán</span>
-                  </span>
-                </div>
+              <div class="info-row">
+                <span class="info-label">Mã HD:</span>
+                <span>${invoice.invoiceNumber}</span>
               </div>
-
-              <div class="customer-details">
-                <div class="section-title">Thông tin khách hàng</div>
-                <div class="info-row">
-                  <span class="info-label">Tên khách hàng:</span>
-                  <span class="info-value">${invoice.customer?.name || activeTab.customer?.name || 'Khách lẻ'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Số điện thoại:</span>
-                  <span class="info-value">${invoice.customer?.phone || activeTab.customer?.phone || 'Không có'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Email:</span>
-                  <span class="info-value">${invoice.customer?.email || activeTab.customer?.email || 'Không có'}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Địa chỉ:</span>
-                  <span class="info-value">${invoice.customer?.address || activeTab.customer?.address || 'Không có'}</span>
-                </div>
+              <div class="info-row">
+                <span class="info-label">Ngày:</span>
+                <span>${invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN')}</span>
               </div>
+              <div class="info-row">
+                <span class="info-label">Giờ:</span>
+                <span>${invoice.createdAt ? new Date(invoice.createdAt).toLocaleTimeString('vi-VN') : new Date().toLocaleTimeString('vi-VN')}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">KH:</span>
+                <span>${invoice.customer?.name || activeTab.customer?.name || 'Khach le'}</span>
+              </div>
+              ${(invoice.customer?.phone || activeTab.customer?.phone) ? `
+              <div class="info-row">
+                <span class="info-label">SDT:</span>
+                <span>${invoice.customer?.phone || activeTab.customer?.phone}</span>
+              </div>
+              ` : ''}
             </div>
 
-            <!-- Items Table -->
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th style="width: 5%">STT</th>
-                  <th style="width: 35%">Tên sản phẩm</th>
-                  <th style="width: 10%" class="text-center">SL</th>
-                  <th style="width: 15%" class="text-right">Đơn giá</th>
-                  <th style="width: 15%" class="text-right">Tạm tính</th>
-                  <th style="width: 10%" class="text-right">Giảm giá</th>
-                  <th style="width: 15%" class="text-right">Thành tiền</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${(invoice.items || activeTab.items).map((item, index) => {
-                  // Xử lý dữ liệu từ invoice API hoặc activeTab
-                  const itemPrice = item.unitPrice || item.price || 0;
-                  const itemQuantity = item.quantity || 0;
-                  const itemSubtotal = itemPrice * itemQuantity;
-                  
-                  // Tính giảm giá item
-                  let itemDiscount = 0;
-                  if (invoice.items) {
-                    // Từ API - có thể có discountAmount và discountPercentage
-                    itemDiscount = (item.discountAmount || 0) + (itemSubtotal * (item.discountPercentage || 0) / 100);
-                  } else {
-                    // Từ activeTab - sử dụng itemDiscounts state
-                    const itemDiscountValue = itemDiscounts[item.productId] || 0;
-                    const itemDiscountType = itemDiscountTypes[item.productId] || 'VND';
-                    itemDiscount = calculateItemDiscount(item.productId, itemDiscountValue, itemDiscountType, itemPrice, itemQuantity);
-                  }
-                  
-                  const itemTotal = itemSubtotal - itemDiscount;
-                  const productName = item.product?.name || item.name || `Sản phẩm ID: ${item.productId || 'N/A'}`;
-                  
-                  return `
-                    <tr>
-                      <td class="text-center">${index + 1}</td>
-                      <td class="product-name">${productName}</td>
-                      <td class="text-center">${itemQuantity}</td>
-                      <td class="text-right currency">${formatCurrency(itemPrice)}</td>
-                      <td class="text-right currency">${formatCurrency(itemSubtotal)}</td>
-                      <td class="text-right currency">${itemDiscount > 0 ? formatCurrency(itemDiscount) : '-'}</td>
-                      <td class="text-right currency">${formatCurrency(itemTotal)}</td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
-            </table>
+            <!-- Items -->
+            <div class="items-section">
+              <div class="items-header">
+                SẢN PHẨM
+              </div>
+              ${(invoice.items || activeTab.items).map((item, index) => {
+                const itemPrice = item.unitPrice || item.price || 0;
+                const itemQuantity = item.quantity || 0;
+                const itemSubtotal = itemPrice * itemQuantity;
+                
+                let itemDiscount = 0;
+                if (invoice.items) {
+                  itemDiscount = (item.discountAmount || 0) + (itemSubtotal * (item.discountPercentage || 0) / 100);
+                } else {
+                  const itemDiscountValue = itemDiscounts[item.productId] || 0;
+                  const itemDiscountType = itemDiscountTypes[item.productId] || 'VND';
+                  itemDiscount = calculateItemDiscount(item.productId, itemDiscountValue, itemDiscountType, itemPrice, itemQuantity);
+                }
+                
+                const itemTotal = itemSubtotal - itemDiscount;
+                const productName = item.product?.name || item.name || `SP ID: ${item.productId || 'N/A'}`;
+                
+                return `
+                  <div class="item-row">
+                    <div class="item-name">${productName}</div>
+                    <div class="item-details">
+                      <span>${itemQuantity} x ${formatCurrency(itemPrice)}</span>
+                      <span>${formatCurrency(itemTotal)}</span>
+                    </div>
+                    ${itemDiscount > 0 ? `
+                    <div class="item-details">
+                      <span>Giảm giá:</span>
+                      <span>-${formatCurrency(itemDiscount)}</span>
+                    </div>
+                    ` : ''}
+                  </div>
+                `;
+              }).join('')}
+            </div>
 
             <!-- Summary -->
             <div class="summary">
-              <table class="summary-table">
-                <tr>
-                  <td class="label">Tổng phụ:</td>
-                  <td class="value currency">${formatCurrency(invoice.subtotal || activeTab.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}</td>
-                </tr>
-                ${(invoice.discountAmount || calculateTotalDiscount()) > 0 ? `
-                  <tr>
-                    <td class="label">Giảm giá hóa đơn:</td>
-                    <td class="value currency">-${formatCurrency(invoice.discountAmount || calculateTotalDiscount())}</td>
-                  </tr>
-                ` : ''}
-                <tr class="total-row">
-                  <td class="label">TỔNG CỘNG:</td>
-                  <td class="value currency">${formatCurrency(invoice.totalAmount || calculateFinalTotal())}</td>
-                </tr>
-              </table>
+              <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span>${formatCurrency(invoice.subtotal || activeTab.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}</span>
+              </div>
+              ${(invoice.discountAmount || calculateTotalDiscount()) > 0 ? `
+                <div class="summary-row">
+                  <span>Giảm giá HD:</span>
+                  <span>-${formatCurrency(invoice.discountAmount || calculateTotalDiscount())}</span>
+                </div>
+              ` : ''}
+              <div class="total-row">
+                <div class="item-details">
+                  <span>TỔNG CỘNG:</span>
+                  <span>${formatCurrency(invoice.totalAmount || calculateFinalTotal())}</span>
+                </div>
+              </div>
             </div>
 
             <!-- Payment Info -->
             <div class="payment-info">
-              <div class="section-title">Thông tin thanh toán</div>
               <div class="info-row">
-                <span class="info-label">Phương thức thanh toán:</span>
-                <span class="info-value">
+                <span class="info-label">Thanh toán:</span>
+                <span>
                   ${
                     (invoice.paymentMethod || activeTab.paymentMethod) === 'CASH' || (invoice.paymentMethod || activeTab.paymentMethod) === 'cash' 
-                      ? '💵 Tiền mặt' 
-                      : '🏦 Chuyển khoản'
+                      ? 'Tiền mặt' 
+                      : 'Chuyển khoản'
                   }
                 </span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Thời gian thanh toán:</span>
-                <span class="info-value">${new Date().toLocaleString('vi-VN')}</span>
               </div>
             </div>
 
             <!-- Footer -->
             <div class="footer">
-              <div class="thank-you">🙏 Cảm ơn quý khách đã mua hàng!</div>
-              <p>Hóa đơn này đã được thanh toán và có giá trị pháp lý.</p>
-              <p style="margin-top: 10px;">
-                In lúc: ${new Date().toLocaleString('vi-VN')} | 
-                Nhân viên: Admin | 
-                Mã hóa đơn: ${invoice.invoiceNumber}
-              </p>
+              <div>Cảm ơn quý khách!</div>
+              <div>In luc: ${new Date().toLocaleString('vi-VN')}</div>
             </div>
           </div>
         </body>
@@ -854,320 +729,217 @@ const InvoiceManagement = () => {
       toast.error('Hóa đơn trống, không thể in');
       return;
     }
-    
-    // Tạo HTML template cho in hóa đơn tạm thời
-    const printContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Hóa đơn tạm thời</title>
-        <style>
-          @media print {
-            @page {
-              size: A4;
-              margin: 10mm;
+
+    try {
+      // Tạo HTML template cho in hóa đơn tạm thời - Khổ K80 (80mm x 45mm)
+      const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Hóa đơn tạm thời</title>
+          <style>
+            @media print {
+              @page {
+                size: 80mm 45mm;
+                margin: 2mm;
+              }
             }
-            body {
-              -webkit-print-color-adjust: exact;
-              print-color-adjust: exact;
-            }
-          }
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 12px;
-            line-height: 1.4;
-            color: #333;
-            background: white;
-          }
-          
-          .invoice-container {
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-          }
-          
-          .header {
-            text-align: center;
-            border-bottom: 2px solid #2563eb;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-          }
-          
-          .company-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 5px;
-          }
-          
-          .company-info {
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 10px;
-          }
-          
-          .invoice-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-top: 15px;
-          }
-          
-          .draft-notice {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 2px solid #f59e0b;
-          }
-          
-          .invoice-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 20px;
-          }
-          
-          .invoice-details, .customer-details {
-            flex: 1;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-          }
-          
-          .section-title {
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 10px;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-          }
-          
-          .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-          }
-          
-          .info-label {
-            font-weight: 500;
-            color: #4b5563;
-          }
-          
-          .info-value {
-            color: #1f2937;
-          }
-          
-          .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          }
-          
-          .items-table th {
-            background: #2563eb;
-            color: white;
-            padding: 12px 8px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-          }
-          
-          .items-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 11px;
-          }
-          
-          .items-table tr:nth-child(even) {
-            background: #f8fafc;
-          }
-          
-          .text-right {
-            text-align: right;
-          }
-          
-          .text-center {
-            text-align: center;
-          }
-          
-          .product-name {
-            font-weight: 500;
-            color: #1f2937;
-          }
-          
-          .summary {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-          }
-          
-          .summary-table {
-            width: 300px;
-            border-collapse: collapse;
-          }
-          
-          .summary-table td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #e2e8f0;
-          }
-          
-          .summary-table .label {
-            font-weight: 500;
-            color: #4b5563;
-          }
-          
-          .summary-table .value {
-            text-align: right;
-            color: #1f2937;
-          }
-          
-          .total-row {
-            background: #2563eb;
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-          }
-          
-          .total-row td {
-            border-bottom: none;
-          }
-          
-          .payment-info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f0f9ff;
-            border-radius: 8px;
-            border-left: 4px solid #2563eb;
-          }
-          
-          .footer {
-            margin-top: 30px;
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            color: #6b7280;
-            font-size: 11px;
-          }
-          
-          .thank-you {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 10px;
-          }
-          
-          .currency {
-            font-weight: 500;
-          }
-          
-          @media print {
-            .invoice-container {
-              max-width: none;
+            
+            * {
+              margin: 0;
               padding: 0;
+              box-sizing: border-box;
             }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="invoice-container">
-          <!-- Header -->
-          <div class="header">
-            <div class="company-name">CỬA HÀNG BÁN LẺ</div>
-            <div class="company-info">
-              Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM<br>
-              Điện thoại: (028) 1234 5678 | Email: info@cuahang.com<br>
-              Website: www.cuahang.com
+            
+            body {
+              font-family: 'Courier New', monospace;
+              font-size: 8px;
+              line-height: 1.2;
+              color: #000;
+              background: white;
+              width: 76mm;
+              margin: 0 auto;
+            }
+            
+            .invoice-container {
+              width: 100%;
+              padding: 1mm;
+            }
+            
+            .header {
+              text-align: center;
+              border-bottom: 1px solid #000;
+              padding-bottom: 2mm;
+              margin-bottom: 2mm;
+            }
+            
+            .company-name {
+              font-size: 12px;
+              font-weight: bold;
+              margin-bottom: 1mm;
+            }
+            
+            .company-info {
+              font-size: 7px;
+              margin-bottom: 1mm;
+            }
+            
+            .invoice-title {
+              font-size: 10px;
+              font-weight: bold;
+              margin-top: 1mm;
+            }
+            
+            .draft-notice {
+              text-align: center;
+              font-weight: bold;
+              margin-bottom: 2mm;
+              font-size: 8px;
+              border: 1px dashed #000;
+              padding: 1mm;
+            }
+            
+            .invoice-info {
+              margin-bottom: 2mm;
+            }
+            
+            .info-row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
+            }
+            
+            .info-label {
+              font-weight: bold;
+            }
+            
+            .items-section {
+              margin: 2mm 0;
+            }
+            
+            .items-header {
+              border-bottom: 1px solid #000;
+              padding-bottom: 1mm;
+              margin-bottom: 1mm;
+              font-size: 7px;
+              font-weight: bold;
+            }
+            
+            .item-row {
+              margin-bottom: 1mm;
+              font-size: 7px;
+            }
+            
+            .item-name {
+              font-weight: bold;
+              margin-bottom: 0.5mm;
+            }
+            
+            .item-details {
+              display: flex;
+              justify-content: space-between;
+            }
+            
+            .summary {
+              border-top: 1px solid #000;
+              padding-top: 1mm;
+              margin-top: 2mm;
+            }
+            
+            .summary-row {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0.5mm;
+              font-size: 7px;
+            }
+            
+            .total-row {
+              font-weight: bold;
+              font-size: 8px;
+              border-top: 1px solid #000;
+              border-bottom: 1px solid #000;
+              padding: 1mm 0;
+              margin-top: 1mm;
+            }
+            
+            .payment-info {
+              margin-top: 2mm;
+              font-size: 7px;
+            }
+            
+            .footer {
+              margin-top: 2mm;
+              text-align: center;
+              font-size: 6px;
+              border-top: 1px solid #000;
+              padding-top: 1mm;
+            }
+            
+            .text-right {
+              text-align: right;
+            }
+            
+            .text-center {
+              text-align: center;
+            }
+            
+            @media print {
+              .invoice-container {
+                padding: 0;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="invoice-container">
+            <!-- Header -->
+            <div class="header">
+              <div class="company-name">MIXX STORE</div>
+              <div class="company-info">
+                123 Duong ABC, Quan XYZ, TP.HCM<br>
+                DT: (028) 1234 5678
+              </div>
+              <div class="invoice-title">HOA DON TAM THOI</div>
             </div>
-            <div class="invoice-title">HÓA ĐƠN BÁN HÀNG</div>
-          </div>
 
-          <!-- Draft Notice -->
-          <div class="draft-notice">
-            ⚠️ HÓA ĐƠN TẠM THỜI - CHƯA THANH TOÁN ⚠️
-          </div>
-
-          <!-- Invoice & Customer Info -->
-          <div class="invoice-info">
-            <div class="invoice-details">
-              <div class="section-title">Thông tin hóa đơn</div>
-              <div class="info-row">
-                <span class="info-label">Mã hóa đơn:</span>
-                <span class="info-value">DRAFT-${Date.now()}</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Ngày tạo:</span>
-                <span class="info-value">${new Date().toLocaleDateString('vi-VN')}</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Giờ tạo:</span>
-                <span class="info-value">${new Date().toLocaleTimeString('vi-VN')}</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Trạng thái:</span>
-                <span class="info-value">
-                  <span style="background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase;">
-                    Chưa thanh toán
-                  </span>
-                </span>
-              </div>
+            <!-- Draft Notice -->
+            <div class="draft-notice">
+              CHUA THANH TOAN
             </div>
 
-            <div class="customer-details">
-              <div class="section-title">Thông tin khách hàng</div>
+            <!-- Invoice Info -->
+            <div class="invoice-info">
               <div class="info-row">
-                <span class="info-label">Tên khách hàng:</span>
-                <span class="info-value">${activeTab.customer?.name || 'Khách lẻ'}</span>
+                <span class="info-label">Ma HD:</span>
+                <span>DRAFT-${Date.now()}</span>
               </div>
               <div class="info-row">
-                <span class="info-label">Số điện thoại:</span>
-                <span class="info-value">${activeTab.customer?.phone || 'Không có'}</span>
+                <span class="info-label">Ngay:</span>
+                <span>${new Date().toLocaleDateString('vi-VN')}</span>
               </div>
               <div class="info-row">
-                <span class="info-label">Email:</span>
-                <span class="info-value">${activeTab.customer?.email || 'Không có'}</span>
+                <span class="info-label">Gio:</span>
+                <span>${new Date().toLocaleTimeString('vi-VN')}</span>
               </div>
               <div class="info-row">
-                <span class="info-label">Địa chỉ:</span>
-                <span class="info-value">${activeTab.customer?.address || 'Không có'}</span>
+                <span class="info-label">KH:</span>
+                <span>${activeTab.customer?.name || 'Khach le'}</span>
               </div>
+              ${activeTab.customer?.phone ? `
+              <div class="info-row">
+                <span class="info-label">SDT:</span>
+                <span>${activeTab.customer.phone}</span>
+              </div>
+              ` : ''}
             </div>
-          </div>
 
-          <!-- Items Table -->
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th style="width: 5%">STT</th>
-                <th style="width: 35%">Tên sản phẩm</th>
-                <th style="width: 10%" class="text-center">SL</th>
-                <th style="width: 15%" class="text-right">Đơn giá</th>
-                <th style="width: 15%" class="text-right">Tạm tính</th>
-                <th style="width: 10%" class="text-right">Giảm giá</th>
-                <th style="width: 15%" class="text-right">Thành tiền</th>
-              </tr>
-            </thead>
-            <tbody>
+            <!-- Items -->
+            <div class="items-section">
+              <div class="items-header">
+                SAN PHAM
+              </div>
               ${activeTab.items.map((item, index) => {
                 const itemDiscountValue = itemDiscounts[item.productId] || 0;
                 const itemDiscountType = itemDiscountTypes[item.productId] || 'VND';
@@ -1176,96 +948,98 @@ const InvoiceManagement = () => {
                 const itemTotal = itemSubtotal - itemDiscount;
                 
                 return `
-                  <tr>
-                    <td class="text-center">${index + 1}</td>
-                    <td class="product-name">${item.name}</td>
-                    <td class="text-center">${item.quantity}</td>
-                    <td class="text-right currency">${formatCurrency(item.price)}</td>
-                    <td class="text-right currency">${formatCurrency(itemSubtotal)}</td>
-                    <td class="text-right currency">${itemDiscount > 0 ? formatCurrency(itemDiscount) : '-'}</td>
-                    <td class="text-right currency">${formatCurrency(itemTotal)}</td>
-                  </tr>
+                  <div class="item-row">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-details">
+                      <span>${item.quantity} x ${formatCurrency(item.price)}</span>
+                      <span>${formatCurrency(itemTotal)}</span>
+                    </div>
+                    ${itemDiscount > 0 ? `
+                    <div class="item-details">
+                      <span>Giam gia:</span>
+                      <span>-${formatCurrency(itemDiscount)}</span>
+                    </div>
+                    ` : ''}
+                  </div>
                 `;
               }).join('')}
-            </tbody>
-          </table>
+            </div>
 
-          <!-- Summary -->
-          <div class="summary">
-            <table class="summary-table">
-              <tr>
-                <td class="label">Tổng phụ:</td>
-                <td class="value currency">${formatCurrency(activeTab.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}</td>
-              </tr>
+            <!-- Summary -->
+            <div class="summary">
+              <div class="summary-row">
+                <span>Tam tinh:</span>
+                <span>${formatCurrency(activeTab.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}</span>
+              </div>
               ${getItemDiscountTotal() > 0 ? `
-                <tr>
-                  <td class="label">Giảm giá sản phẩm:</td>
-                  <td class="value currency">-${formatCurrency(getItemDiscountTotal())}</td>
-                </tr>
+                <div class="summary-row">
+                  <span>Giam gia SP:</span>
+                  <span>-${formatCurrency(getItemDiscountTotal())}</span>
+                </div>
               ` : ''}
               ${calculateTotalDiscount() > 0 ? `
-                <tr>
-                  <td class="label">Giảm giá tổng (${discountAmount}${discountType === 'PERCENT' ? '%' : 'đ'}):</td>
-                  <td class="value currency">-${formatCurrency(calculateTotalDiscount())}</td>
-                </tr>
+                <div class="summary-row">
+                  <span>Giam gia HD:</span>
+                  <span>-${formatCurrency(calculateTotalDiscount())}</span>
+                </div>
               ` : ''}
-              <tr class="total-row">
-                <td class="label">TỔNG CỘNG:</td>
-                <td class="value currency">${formatCurrency(calculateFinalTotal())}</td>
-              </tr>
-            </table>
-          </div>
+              <div class="total-row">
+                <div class="item-details">
+                  <span>TONG CONG:</span>
+                  <span>${formatCurrency(calculateFinalTotal())}</span>
+                </div>
+              </div>
+            </div>
 
-          <!-- Payment Info -->
-          <div class="payment-info">
-            <div class="section-title">Thông tin thanh toán</div>
-            <div class="info-row">
-              <span class="info-label">Phương thức thanh toán:</span>
-              <span class="info-value">
-                ${activeTab.paymentMethod === 'cash' ? '💵 Tiền mặt' : '🏦 Chuyển khoản'}
-              </span>
+            <!-- Payment Info -->
+            <div class="payment-info">
+              <div class="info-row">
+                <span class="info-label">Thanh toan:</span>
+                <span>
+                  ${activeTab.paymentMethod === 'cash' ? 'Tien mat' : 'Chuyen khoan'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+              <div>HOA DON TAM THOI</div>
+              <div>In luc: ${new Date().toLocaleString('vi-VN')}</div>
             </div>
           </div>
+        </body>
+        </html>
+      `;
 
-          <!-- Footer -->
-          <div class="footer">
-            <div class="thank-you">🙏 Cảm ơn quý khách đã mua hàng!</div>
-            <p>Hóa đơn này chỉ có giá trị khi đã thanh toán.</p>
-            <p style="margin-top: 10px;">
-              In lúc: ${new Date().toLocaleString('vi-VN')} | 
-              Nhân viên: Admin
-            </p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
+      // Tạo cửa sổ in mới
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+      if (!printWindow) {
+        toast.error('Không thể mở cửa sổ in. Vui lòng cho phép popup.');
+        return;
+      }
 
-    // Tạo cửa sổ in mới
-    const printWindow = window.open('', '_blank', 'width=800,height=600');
-    if (!printWindow) {
-      toast.error('Không thể mở cửa sổ in. Vui lòng cho phép popup.');
-      return;
+      // Ghi nội dung vào cửa sổ in
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+
+      // Đợi tải xong rồi in
+      printWindow.onload = () => {
+        setTimeout(() => {
+          printWindow.focus();
+          printWindow.print();
+          
+          // Đóng cửa sổ sau khi in (tùy chọn)
+          printWindow.onafterprint = () => {
+            printWindow.close();
+          };
+        }, 500);
+      };
+
+      toast.success('Đang in hóa đơn tạm thời...');
+    } catch (error) {
+      console.error('Error printing temporary invoice:', error);
+      toast.error('Không thể in hóa đơn tạm thời. Vui lòng thử lại.');
     }
-
-    // Ghi nội dung vào cửa sổ in
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-
-    // Đợi tải xong rồi in
-    printWindow.onload = () => {
-      setTimeout(() => {
-        printWindow.focus();
-        printWindow.print();
-        
-        // Đóng cửa sổ sau khi in (tùy chọn)
-        printWindow.onafterprint = () => {
-          printWindow.close();
-        };
-      }, 500);
-    };
-
-    toast.success('Đang in hóa đơn tạm thời...');
   };
 
   const getItemDiscountTotal = () => {
@@ -1311,7 +1085,7 @@ const InvoiceManagement = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
           <p className="text-slate-500">Đang tải dữ liệu...</p>
         </div>
       </div>
@@ -1323,7 +1097,7 @@ const InvoiceManagement = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <p className="text-slate-500 mb-4">Đang khởi tạo hóa đơn...</p>
-          <button onClick={handleAddTab} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <button onClick={handleAddTab} className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">
             Tạo hóa đơn mới
           </button>
         </div>
@@ -1339,7 +1113,7 @@ const InvoiceManagement = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
             Quản lý thanh toán
           </h1>
           <p className="text-slate-600 mt-1">Tạo và quản lý hóa đơn bán hàng</p>
@@ -1359,7 +1133,7 @@ const InvoiceManagement = () => {
           
           <button 
             onClick={handleAddTab} 
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
+            className="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2"
           >
             <PlusIcon className="h-5 w-5" />
             <span>Thêm hóa đơn mới</span>
@@ -1376,7 +1150,7 @@ const InvoiceManagement = () => {
                 onClick={() => handleSetActiveTab(tab.id)}
                 className={`${
                   tab.id === state.activeTabId
-                    ? 'border-blue-500 text-blue-600 bg-blue-50'
+                    ? 'border-pink-500 bg-pink-500 text-white'
                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                 } whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg transition-all duration-200`}
               >
@@ -1400,21 +1174,21 @@ const InvoiceManagement = () => {
         <div className="xl:col-span-1 order-1 xl:order-2">
           <div className="sticky top-6 space-y-6">
             {/* Total Summary */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200/50 shadow-lg">
+            <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border border-pink-200/50 shadow-lg">
               <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                <ShoppingCartIcon className="h-5 w-5 mr-2 text-blue-600" />
+                <ShoppingCartIcon className="h-5 w-5 mr-2 text-pink-600" />
                 {activeTab.name}
               </h3>
               
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-blue-200/50">
+                <div className="flex justify-between items-center py-2 border-b border-pink-200/50">
                   <span className="text-slate-600">Số lượng sản phẩm:</span>
                   <span className="font-medium text-slate-900">
                     {activeTab.items.reduce((sum, item) => sum + item.quantity, 0)}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-b border-blue-200/50">
+                <div className="flex justify-between items-center py-2 border-b border-pink-200/50">
                   <span className="text-slate-600">Tạm tính:</span>
                   <span className="font-medium text-slate-900">
                     {formatCurrency(activeTab.items.reduce((sum, item) => sum + (item.price * item.quantity), 0))}
@@ -1422,7 +1196,7 @@ const InvoiceManagement = () => {
                 </div>
                 
                 {getItemDiscountTotal() > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-blue-200/50">
+                  <div className="flex justify-between items-center py-2 border-b border-pink-200/50">
                     <span className="text-slate-600">Giảm giá sản phẩm:</span>
                     <span className="font-medium text-red-600">
                       -{formatCurrency(getItemDiscountTotal())}
@@ -1431,7 +1205,7 @@ const InvoiceManagement = () => {
                 )}
                 
                 {calculateTotalDiscount() > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-blue-200/50">
+                  <div className="flex justify-between items-center py-2 border-b border-pink-200/50">
                     <span className="text-slate-600">Giảm giá tổng:</span>
                     <span className="font-medium text-red-600">
                       -{formatCurrency(calculateTotalDiscount())}
@@ -1439,7 +1213,7 @@ const InvoiceManagement = () => {
                   </div>
                 )}
                 
-                <div className="flex justify-between items-center py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl px-4 text-white">
+                <div className="flex justify-between items-center py-3 bg-gradient-to-r from-pink-400 to-rose-500 rounded-xl px-4 text-white">
                   <span className="font-semibold">Tổng cộng:</span>
                   <span className="text-xl font-bold">
                     {formatCurrency(calculateFinalTotal())}
@@ -1525,17 +1299,17 @@ const InvoiceManagement = () => {
                             <div
                               key={customer.id}
                               onClick={() => handleSelectCustomer(customer)}
-                              className={`p-3 hover:bg-blue-50 cursor-pointer border-b border-slate-100 last:border-b-0 transition-colors ${
-                                index === selectedSuggestionIndex ? 'bg-blue-50' : ''
+                              className={`p-3 hover:bg-pink-50 cursor-pointer border-b border-slate-100 last:border-b-0 transition-colors ${
+                                index === selectedSuggestionIndex ? 'bg-pink-50' : ''
                               }`}
                             >
                               <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center flex-shrink-0">
                                   <UserIcon className="h-4 w-4 text-white" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="font-medium text-slate-900 truncate">{highlightText(customer.name, customerPhone)}</p>
-                                  <p className="text-sm text-blue-600 font-mono">{highlightText(customer.phone, customerPhone)}</p>
+                                  <p className="text-sm text-pink-600 font-mono">{highlightText(customer.phone, customerPhone)}</p>
                                 </div>
                                 <div className="text-xs text-slate-400">
                                   Click để chọn
@@ -1623,7 +1397,7 @@ const InvoiceManagement = () => {
                   onClick={() => handleSetPaymentMethod('cash')}
                   className={`w-full flex items-center justify-center space-x-3 p-4 rounded-xl border-2 transition-all ${
                     activeTab.paymentMethod === 'cash'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      ? 'border-pink-500 bg-pink-50 text-pink-700'
                       : 'border-slate-200 hover:border-slate-300 text-slate-600'
                   }`}
                 >
@@ -1634,7 +1408,7 @@ const InvoiceManagement = () => {
                   onClick={() => handleSetPaymentMethod('transfer')}
                   className={`w-full flex items-center justify-center space-x-3 p-4 rounded-xl border-2 transition-all ${
                     activeTab.paymentMethod === 'transfer'
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      ? 'border-pink-500 bg-pink-50 text-pink-700'
                       : 'border-slate-200 hover:border-slate-300 text-slate-600'
                   }`}
                 >
@@ -1720,7 +1494,7 @@ const InvoiceManagement = () => {
                 placeholder="Tìm kiếm sản phẩm..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all"
               />
             </div>
             
@@ -1753,14 +1527,14 @@ const InvoiceManagement = () => {
                               ? 'border-red-200 bg-red-50 cursor-not-allowed opacity-75' 
                               : isLowStock
                               ? 'border-yellow-200 bg-yellow-50 cursor-pointer hover:border-yellow-300 hover:bg-yellow-100'
-                              : 'border-slate-200 bg-white cursor-pointer hover:border-blue-300 hover:bg-blue-50'
+                              : 'border-slate-200 bg-white cursor-pointer hover:border-pink-300 hover:bg-pink-50'
                           }`}
                           onClick={() => !isOutOfStock && handleAddProduct(product.id)}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <h4 className="font-medium text-slate-900">{highlightText(product.name, searchTerm)}</h4>
-                              <p className="text-sm text-blue-600 font-semibold">{formatCurrency(product.price)}</p>
+                              <p className="text-sm text-pink-600 font-semibold">{formatCurrency(product.price)}</p>
                               <div className="flex items-center space-x-2 mt-1">
                                 <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
                                   isOutOfStock
@@ -1782,8 +1556,8 @@ const InvoiceManagement = () => {
                                   <XMarkIcon className="h-4 w-4 text-red-600" />
                                 </div>
                               ) : (
-                                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors">
-                                  <PlusIcon className="h-4 w-4 text-blue-600" />
+                                <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center hover:bg-pink-200 transition-colors">
+                                  <PlusIcon className="h-4 w-4 text-pink-600" />
                                 </div>
                               )}
                             </div>
@@ -1804,7 +1578,7 @@ const InvoiceManagement = () => {
                 <p className="text-slate-400 text-sm mt-2">Vui lòng thêm sản phẩm từ trang Quản lý sản phẩm để bắt đầu tạo hóa đơn</p>
                 <a 
                   href="/products" 
-                  className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center mt-4 px-4 py-2 bg-pink-500 text-white text-sm font-medium rounded-lg hover:bg-pink-600 transition-colors"
                 >
                   <CubeIcon className="h-4 w-4 mr-2" />
                   Quản lý sản phẩm
@@ -1861,7 +1635,7 @@ const InvoiceManagement = () => {
                           </div>
                           <p className="text-sm text-slate-600">{formatCurrency(item.price)} x {item.quantity}</p>
                           <div className="flex items-center space-x-2 mt-1">
-                            <p className="text-lg font-bold text-blue-600">{formatCurrency((item.price * item.quantity) - itemDiscount)}</p>
+                            <p className="text-lg font-bold text-pink-600">{formatCurrency((item.price * item.quantity) - itemDiscount)}</p>
                             {isOverStock && (
                               <span className="text-xs text-red-600 font-medium">
                                 (Chỉ còn {currentStock} sản phẩm)

@@ -375,7 +375,7 @@ const Reports = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
       </div>
     );
   }
@@ -388,7 +388,7 @@ const Reports = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
             Báo cáo bán hàng
           </h1>
           <p className="text-slate-600 mt-1">
@@ -404,7 +404,7 @@ const Reports = () => {
           <button
             onClick={loadReports}
             disabled={loading}
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 disabled:opacity-50"
+            className="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white px-4 py-3 rounded-xl font-medium shadow-lg shadow-pink-500/25 transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 disabled:opacity-50"
           >
             <ArrowTrendingUpIcon className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
             <span>Làm mới</span>
@@ -440,7 +440,7 @@ const Reports = () => {
                   onClick={() => setDateRange(period.key)}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                     dateRange === period.key
-                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'
+                      ? 'bg-pink-100 text-pink-700 border-2 border-pink-300'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-2 border-transparent'
                   }`}
                 >
@@ -459,7 +459,7 @@ const Reports = () => {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 />
               </div>
               <div>
@@ -469,7 +469,7 @@ const Reports = () => {
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={startDate}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
                 />
               </div>
             </div>
@@ -481,7 +481,7 @@ const Reports = () => {
             <select
               value={paymentStatus}
               onChange={(e) => setPaymentStatus(e.target.value)}
-              className="w-full md:w-auto px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full md:w-auto px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent"
             >
               <option value="">Tất cả</option>
               <option value="PAID">Đã thanh toán</option>
@@ -510,7 +510,7 @@ const Reports = () => {
           title="Số giao dịch"
           value={stats.totalInvoices}
           icon={ShoppingBagIcon}
-          color="bg-gradient-to-br from-blue-500 to-blue-600"
+          color="bg-gradient-to-br from-pink-400 to-rose-500"
           subtitle={`Trung bình: ${formatCurrency(stats.averageOrderValue)}`}
           trend={{ 
             type: comparisonStats.transactionGrowth >= 0 ? 'up' : 'down', 
@@ -522,7 +522,7 @@ const Reports = () => {
           title="Giao dịch trung bình"
           value={formatCurrency(stats.averageOrderValue)}
           icon={ArrowTrendingUpIcon}
-          color="bg-gradient-to-br from-purple-500 to-purple-600"
+          color="bg-gradient-to-br from-rose-400 to-pink-500"
           subtitle="Giá trị đơn hàng"
           trend={{ 
             type: comparisonStats.avgOrderGrowth >= 0 ? 'up' : 'down', 
@@ -547,7 +547,7 @@ const Reports = () => {
       {paymentMethods.length > 0 && (
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
           <h3 className="text-lg font-semibold text-slate-900 mb-6 flex items-center">
-            <ChartBarIcon className="h-5 w-5 mr-2 text-purple-600" />
+            <ChartBarIcon className="h-5 w-5 mr-2 text-pink-600" />
             Phương thức thanh toán phổ biến
           </h3>
           <div className="space-y-4">
@@ -555,8 +555,8 @@ const Reports = () => {
               <div key={method.method} className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className={`w-4 h-4 rounded-full ${
-                    index === 0 ? 'bg-blue-500' : 
-                    index === 1 ? 'bg-green-500' : 'bg-purple-500'
+                    index === 0 ? 'bg-pink-500' : 
+                    index === 1 ? 'bg-rose-500' : 'bg-pink-400'
                   }`}></div>
                   <span className="text-sm font-medium text-slate-700">
                     {method.method === 'CASH' ? 'Tiền mặt' : 
@@ -576,14 +576,14 @@ const Reports = () => {
         {/* Recent Transactions */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
           <h3 className="text-lg font-semibold text-slate-900 mb-6 flex items-center">
-            <ShoppingBagIcon className="h-5 w-5 mr-2 text-blue-600" />
+            <ShoppingBagIcon className="h-5 w-5 mr-2 text-pink-600" />
             Giao dịch gần đây
           </h3>
           <div className="space-y-4">
             {recentInvoices.length > 0 ? recentInvoices.map((invoice) => (
-              <div key={invoice.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-xl border border-slate-200 hover:shadow-md transition-all">
+              <div key={invoice.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-pink-50 rounded-xl border border-slate-200 hover:shadow-md transition-all">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center">
                     <UsersIcon className="h-5 w-5 text-white" />
                   </div>
                   <div>
